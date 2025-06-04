@@ -1,0 +1,35 @@
+ErrorDocument 404 /404.html
+DirectoryIndex index.html
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType video/mp4 "access plus 1 year"
+    ExpiresByType audio/mp3 "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/otf "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+
+    FileETag None
+</IfModule>
+
+<IfModule mod_deflate.c>
+    <FilesMatch "\.(css|js|webp|png|mp4|mp3)$">
+        SetOutputFilter DEFLATE
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|webp|png|mp4|mp3)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+
+    <FilesMatch "\.woff2$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+
+</IfModule>
