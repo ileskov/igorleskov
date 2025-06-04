@@ -27,14 +27,16 @@
         }
 
         .artist-image img {
-		 max-width: 100%;
-         border-radius: 50%;
-         border: 5px solid #fff;
+         width: 300px;
+         height: 300px;
+         object-fit: cover;
+         border-radius: 0; 
+         border: 0px solid #fff;
          box-shadow: 0 0 10px rgba(0, 100, 0, 0.1);
-         animation: pulse-green 2s infinite alternate; 
+         animation: pulse-green 2s infinite alternate;
          transition: transform 0.3s ease, opacity 0.3s ease;
          will-change: transform, box-shadow;
-	  margin-top: 30px;
+         margin-top: 30px;
         }
 		
 		@keyframes pulse-green {
