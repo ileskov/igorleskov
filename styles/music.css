@@ -16,7 +16,7 @@
         }
 
         .music-container::-webkit-scrollbar-thumb {
-           background: #000000d1;
+           background: #242424;
 			border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
         }
