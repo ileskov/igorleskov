@@ -9,7 +9,21 @@
           padding: 10px 20px;
           text-align: center;
           z-index: 9999;
-        }
+	  box-shadow: 0 0 20px 5px #ffddc585;
+          animation: glowPulse 2.5s infinite ease-in-out;
+         }
+
+          @keyframes glowPulse {
+           0% {
+           box-shadow: 0 0 10px 3px #ffddc550;
+         }
+           50% {
+           box-shadow: 0 0 20px 6px #ffddc5aa;
+         }
+           100% {
+           box-shadow: 0 0 10px 3px #ffddc550;
+           }
+         }
 
         #cookie-consent-bar p {
           margin: 0;
