@@ -30,7 +30,7 @@
          width: 300px;
          height: 300px;
          object-fit: cover;
-         border-radius: 0; 
+         border-radius: 10px; 
          border: 5px solid #fddec6;
          box-shadow: 0 0 20px 5px #ffddc585; 
          animation: glowPulse 2.5s infinite ease-in-out;
