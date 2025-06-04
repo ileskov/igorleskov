@@ -32,21 +32,23 @@
          object-fit: cover;
          border-radius: 0; 
          border: 5px solid #fddec6;
-         box-shadow: 0 0 10px rgba(0, 100, 0, 0.1);
-         animation: pulse-green 2s infinite alternate;
-         transition: transform 0.3s ease, opacity 0.3s ease;
-         will-change: transform, box-shadow;
+         box-shadow: 0 0 20px 5px #ffddc585; 
+         animation: glowPulse 2.5s infinite ease-in-out;
+	 will-change: transform, box-shadow;
          margin-top: 30px;
         }
-		
-		@keyframes pulse-green {
-        0% {
-        box-shadow: 0 0 10px rgba(0, 100, 0, 0.1);
+
+        @keyframes glowPulse {
+         0% {
+         box-shadow: 0 0 10px 3px #ffddc550;
         }
-        100% {
-        box-shadow: 0 0 40px rgb(255 200 111 / 50%);
+         50% {
+         box-shadow: 0 0 20px 6px #ffddc5aa;
         }
-    }
+         100% {
+         box-shadow: 0 0 10px 3px #ffddc550;
+         }
+        }
 
         .artist-image4 {
          width: calc(33.33% - 20px);
