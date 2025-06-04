@@ -17,15 +17,19 @@
         }
 
         .news-feed::-webkit-scrollbar-track {
-           background: #f0f0f0;
+           background: #c7c7c7;
+		   border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
         .news-feed::-webkit-scrollbar-thumb {
-           background: #5d5d5d;
+           background: #000000d1;
+			border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
         }
 
         .news-feed::-webkit-scrollbar-thumb:hover {
-           background: #8d8d8d;
+           background: #F44336;
         }
 
         .news-item {
