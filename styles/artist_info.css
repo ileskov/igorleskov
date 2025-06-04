@@ -31,7 +31,7 @@
          height: 300px;
          object-fit: cover;
          border-radius: 0; 
-         border: 5px solid #8D7B68;
+         border: 5px solid #fddec6;
          box-shadow: 0 0 10px rgba(0, 100, 0, 0.1);
          animation: pulse-green 2s infinite alternate;
          transition: transform 0.3s ease, opacity 0.3s ease;
@@ -44,7 +44,7 @@
         box-shadow: 0 0 10px rgba(0, 100, 0, 0.1);
         }
         100% {
-        box-shadow: 0 0 30px rgb(100 62 0 / 50%);
+        box-shadow: 0 0 40px rgb(255 200 111 / 50%);
         }
     }
 
