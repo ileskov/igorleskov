@@ -9,13 +9,11 @@
 			font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #DAD2C8;
-            color: #000;
+            background-color: #F5F5F5;
         }
         
         header {
-            background-color: #8D7B68;
-            color: #fff;
+            background-color: #5181B8;
             text-align: center;
             padding: 10px 20px;
             display: flex;
@@ -42,7 +40,7 @@
         }
 
         nav ul li a {
-            color: #fddec6;
+            color: #242424;
             text-decoration: none;
             position: relative;
         }
@@ -54,7 +52,7 @@
             left: 0;
             width: 0%;
             height: 2px;
-            background-color: #fddec6;
+            background-color: #242424;
             transition: width 0.3s ease;
         }
 
@@ -68,8 +66,8 @@
         }
 
         footer {
-           background-color: #8D7B68;
-           color: #fff;
+           background-color: #5181B8;
+           color: #242424;
            text-align: center;
            padding: 10px 30px;
            display: flex;
@@ -89,7 +87,7 @@
         }
 		
 		.footer-link {
-           color: #fddec6;
+           color: #242424;
         }
 		
 		.social-icons img {
