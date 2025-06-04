@@ -42,12 +42,7 @@
         }
 
         .section a {
-            color: #000;
-            text-decoration: underline;
-        }
-
-        .section:hover a {
-             color: #fff; 
+            color: #fddec6;
         }
 
         .home1 {
