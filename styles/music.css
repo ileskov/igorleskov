@@ -37,6 +37,10 @@
 		   
         }
 
+        .music-cover-1:hover {
+           opacity: 0.9; 
+        }
+
         .music-cover {
            position: relative;
            width: 250px; 
