@@ -89,54 +89,52 @@
 
         .seek-bar {
   width: 100%;
-  height: 5px;
+  height: 6px;
   -webkit-appearance: none;
   appearance: none;
-  /* Фон по умолчанию — с нулевой заливкой, её будем менять через JS */
-  background: linear-gradient(to right, rgb(57 130 184) 0%, #c7c7c7 0%);
+  background: linear-gradient(to right, #397fb8 0%, #c7c7c7 0%);
   border-radius: 5px;
   outline: none;
-  margin: 0;
-  padding: 0;
   cursor: pointer;
+  padding: 0;
+  margin: 10px 0;
+  transition: background 0.2s;
 }
 
-/* Скрываем стандартный трек в WebKit, делаем прозрачным,
-   чтобы был виден фон с градиентом, который мы задаём через JS */
+/* WebKit track */
 .seek-bar::-webkit-slider-runnable-track {
-  height: 5px;
+  height: 6px;
   background: transparent;
   border-radius: 5px;
 }
 
-/* Стили для "ползунка" в Chrome, Safari */
+/* WebKit thumb */
 .seek-bar::-webkit-slider-thumb {
   -webkit-appearance: none;
-  appearance: none;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: #242424;
   border-radius: 50%;
   cursor: pointer;
-  margin-top: -4px; /* Центрируем ползунок относительно трека */
-  z-index: 1;
+  margin-top: -4px; /* центрирует по вертикали */
   position: relative;
+  z-index: 2;
 }
 
-/* Стили для "ползунка" в Firefox */
+/* Firefox track */
+.seek-bar::-moz-range-track {
+  height: 6px;
+  background: transparent;
+  border-radius: 5px;
+}
+
+/* Firefox thumb */
 .seek-bar::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: #333;
   border-radius: 50%;
   cursor: pointer;
-}
-
-/* Трек в Firefox — тоже прозрачный для корректной отрисовки градиента */
-.seek-bar::-moz-range-track {
-  height: 5px;
-  background: transparent;
-  border-radius: 5px;
 }
 
         .playing {
