@@ -704,47 +704,6 @@
     <script src="scripts/memory_audio.js" async></script>
 	<script src="scripts/cookie.js" defer></script>
 	<script src="scripts/slide_image.js" defer></script>
-
- <script>
-  const audio = document.getElementById('audio');
-  const seekBar = document.getElementById('seekBar');
-
-  // Обновление градиента
-  function updateSeekBarBackground(value, max) {
-    const percent = (value / max) * 100;
-    seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
-  }
-
-  // При загрузке метаданных
-  audio.addEventListener('loadedmetadata', () => {
-    seekBar.max = audio.duration;
-    const saved = localStorage.getItem("audioPosition");
-    if (saved && !isNaN(saved)) {
-      audio.currentTime = parseFloat(saved);
-      seekBar.value = saved;
-    } else {
-      seekBar.value = 0;
-    }
-    updateSeekBarBackground(seekBar.value, seekBar.max);
-  });
-
-  // Обновление при воспроизведении
-  audio.addEventListener("timeupdate", () => {
-    seekBar.value = audio.currentTime;
-    localStorage.setItem("audioPosition", audio.currentTime);
-    updateSeekBarBackground(seekBar.value, seekBar.max);
-  });
-
-  // Перемещение ползунка (в реальном времени)
-  seekBar.addEventListener("input", () => {
-    updateSeekBarBackground(seekBar.value, seekBar.max);
-  });
-
-  // Применить перемотку после отпускания
-  seekBar.addEventListener("change", () => {
-    audio.currentTime = parseFloat(seekBar.value);
-  });
-</script>
    
    </body>
   </html>
