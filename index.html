@@ -709,6 +709,14 @@
   const audio = document.getElementById('audio');
   const seekBar = document.getElementById('seekBar');
 
+  // Функция обновления заливки ползунка
+  function updateSeekBarBackground() {
+    const value = Number(seekBar.value);
+    const max = Number(seekBar.max) || 1; // защита от деления на 0
+    const percent = (value / max) * 100;
+    seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
+  }
+
   // Устанавливаем max и начальную заливку при загрузке метаданных
   audio.addEventListener('loadedmetadata', () => {
     seekBar.max = audio.duration.toString();
@@ -720,24 +728,20 @@
       seekBar.value = saved;
     }
 
-    // Устанавливаем стартовую заливку
-    const percent = (audio.currentTime / audio.duration) * 100;
-    seekBar.style.background = `linear-gradient(to right, rgb(57 130 184) ${percent}%, #c7c7c7 ${percent}%)`;
+    updateSeekBarBackground();
   });
 
   // Обновление ползунка по мере воспроизведения + сохранение позиции
   audio.addEventListener("timeupdate", () => {
     seekBar.value = audio.currentTime.toString();
     localStorage.setItem("audioPosition", audio.currentTime);
-    const percent = (audio.currentTime / audio.duration) * 100;
-    seekBar.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${percent}%, #c7c7c7 ${percent}%)`;
+    updateSeekBarBackground();
   });
 
   // Перемотка вручную + обновление заливки
   seekBar.addEventListener("input", () => {
     audio.currentTime = Number(seekBar.value);
-    const value = (Number(seekBar.value) / Number(seekBar.max)) * 100;
-    seekBar.style.background = `linear-gradient(to right, #397fb8 ${value}%, #c7c7c7 ${value}%)`;
+    updateSeekBarBackground();
   });
 </script>
 
