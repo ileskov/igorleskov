@@ -40,7 +40,7 @@
         }
 
         nav ul li a {
-            color: #242424;
+            color: #ffffff;
             text-decoration: none;
             position: relative;
         }
@@ -52,7 +52,7 @@
             left: 0;
             width: 0%;
             height: 2px;
-            background-color: #242424;
+            background-color: #ffffff;
             transition: width 0.3s ease;
         }
 
