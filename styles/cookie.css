@@ -4,8 +4,8 @@
           top: 0;
           left: 0;
           width: 100%;
-          background-color: #927a67; 
-          color: #ffddc5; 
+          background-color: #242424; 
+          color: #c7c7c7; 
           padding: 10px 20px;
           text-align: center;
           z-index: 9999;
@@ -31,8 +31,8 @@
         }
 
         #cookie-consent-bar button {
-          background-color: #dcd2c8; 
-          color: #404040; 
+          background-color: #c7c7c7; 
+          color: #242424; 
           border: none;
           padding: 8px 20px;
           cursor: pointer;
@@ -41,5 +41,5 @@
         }
 
         #cookie-consent-bar button:hover {
-          background-color: #ffddc5;
+          background-color: #0084b8;
         }
