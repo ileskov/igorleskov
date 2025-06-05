@@ -707,26 +707,26 @@
 
    <script>
   const audio = document.getElementById('audio');
-  const seekBar = document.getElementById('seekBar');
+const seekBar = document.getElementById('seekBar');
 
-  // Устанавливаем max, когда аудио загружено
-  audio.addEventListener('loadedmetadata', () => {
-    seekBar.max = audio.duration;
-  });
+// Устанавливаем max, когда аудио загружено
+audio.addEventListener('loadedmetadata', () => {
+  seekBar.max = audio.duration.toString(); // max — строка
+});
 
-  // Обновление ползунка по мере воспроизведения
-  audio.addEventListener("timeupdate", () => {
-    seekBar.value = audio.currentTime;
-    const percent = (audio.currentTime / audio.duration) * 100;
-    seekBar.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${percent}%, #c7c7c7 ${percent}%)`;
-  });
+// Обновление ползунка по мере воспроизведения
+audio.addEventListener("timeupdate", () => {
+  seekBar.value = audio.currentTime.toString();
+  const percent = (audio.currentTime / audio.duration) * 100;
+  seekBar.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${percent}%, #c7c7c7 ${percent}%)`;
+});
 
-  // Перемотка вручную + обновление заливки
-  seekBar.addEventListener("input", () => {
-    audio.currentTime = seekBar.value;
-    const value = (seekBar.value / seekBar.max) * 100;
-    seekBar.style.background = `linear-gradient(to right, #397fb8 ${value}%, #c7c7c7 ${value}%)`;
-  });
+// Перемотка вручную + обновление заливки
+seekBar.addEventListener("input", () => {
+  audio.currentTime = Number(seekBar.value);
+  const value = (Number(seekBar.value) / Number(seekBar.max)) * 100;
+  seekBar.style.background = `linear-gradient(to right, #397fb8 ${value}%, #c7c7c7 ${value}%)`;
+});
 </script>
 
    
