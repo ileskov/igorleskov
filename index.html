@@ -703,13 +703,26 @@
 	<script src="scripts/cookie.js" defer></script>
 	<script src="scripts/slide_image.js" defer></script>
 
-    <script>
-  const seekBar = document.querySelector('.seek-bar');
+   <script>
+const audio = document.getElementById("audio");
+const seekBar = document.querySelector(".seek-bar");
 
-  seekBar.addEventListener('input', function () {
-    const value = (this.value - this.min) / (this.max - this.min) * 100;
-    this.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${value}%, #c7c7c7 ${value}%, #c7c7c7 100%)`;
-  });
+// Когда загружен мета (длина доступна)
+audio.addEventListener("loadedmetadata", () => {
+  seekBar.max = audio.duration;
+});
+
+// Обновлять ползунок по ходу воспроизведения
+audio.addEventListener("timeupdate", () => {
+  seekBar.value = audio.currentTime;
+  const percent = (audio.currentTime / audio.duration) * 100;
+  seekBar.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${percent}%, #c7c7c7 ${percent}%)`;
+});
+
+// При перемещении ползунка вручную
+seekBar.addEventListener("input", () => {
+  audio.currentTime = seekBar.value;
+});
 </script>
 	
 	  <script>
