@@ -45,17 +45,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
     musicItems.forEach(function(item, index) {
         var playButton = item.querySelector(".play-button");
-        var audioSrc = playButton.dataset.src;
-        var audioPlayer = new Audio(audioSrc);
+        var audioPlayer = item.querySelector("audio"); // Используем встроенный <audio>
         var seekBar = item.querySelector(".seek-bar");
 
-        audioPlayer.addEventListener("loadeddata", function() {
-            var savedTime = localStorage.getItem(audioSrc);
+        audioPlayer.addEventListener("loadedmetadata", function() {
+            seekBar.max = audioPlayer.duration;
+            var savedTime = localStorage.getItem(audioPlayer.src);
             if (savedTime) {
                 audioPlayer.currentTime = parseFloat(savedTime);
                 seekBar.value = parseFloat(savedTime);
+            } else {
+                seekBar.value = 0;
             }
+            updateSeekBarBackground(seekBar.value, seekBar.max);
         });
+
+        // Обновление заливки полосы прогресса
+        function updateSeekBarBackground(value, max) {
+            const percent = (value / max) * 100;
+            seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
+        }
 
         playButton.addEventListener("click", function() {
             if (currentAudioPlayer && currentAudioPlayer !== audioPlayer) {
@@ -78,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else {
                 audioPlayer.pause();
-                localStorage.setItem(audioSrc, audioPlayer.currentTime);
+                localStorage.setItem(audioPlayer.src, audioPlayer.currentTime);
                 playButton.innerHTML = "&#9658;";
                 playButton.classList.remove("playing");
             }
@@ -87,7 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
         audioPlayer.addEventListener("ended", function() {
             playButton.innerHTML = "&#9658;";
             seekBar.value = 0;
-            localStorage.removeItem(audioSrc); 
+            updateSeekBarBackground(0, seekBar.max);
+            localStorage.removeItem(audioPlayer.src); 
             if (index < musicItems.length - 1) {
                 var nextButton = musicItems[index + 1].querySelector(".play-button");
                 nextButton.click();
@@ -96,11 +106,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
         audioPlayer.addEventListener("timeupdate", function() {
             seekBar.value = audioPlayer.currentTime;
+            updateSeekBarBackground(seekBar.value, seekBar.max);
         });
 
+        // Обработчик перемещения ползунка в реальном времени
+        seekBar.addEventListener("input", function() {
+            updateSeekBarBackground(seekBar.value, seekBar.max);
+        });
+
+        // Применяем перемотку после отпускания ползунка
         seekBar.addEventListener("change", function() {
             audioPlayer.currentTime = seekBar.value;
-            localStorage.setItem(audioSrc, seekBar.value); 
+            localStorage.setItem(audioPlayer.src, seekBar.value);
         });
 
         audioPlayer.addEventListener('play', function() {
