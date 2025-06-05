@@ -141,27 +141,23 @@
         </div>
  </section>
 
-      <section id="music" class="section">
-  <h2><i class="fa fa-music" style="width:24px; height:24px;"></i> Музыка</h2>
-    <div class="music-container">
     <div class="music-item">
-      <div class="music-cover-1">
-        <img src="images/Просто рядом.webp" alt="Igor Leskov - Просто рядом" width="300" height="300" loading="auto">
-        <input type="range" class="seek-bar" value="0" min="0" aria-label="Ползунок для перемотки аудиозаписи">
-        <button class="play-button" data-src="audio/Просто рядом.mp3">&#9658;</button>
-      </div>
-      <div class="music-info">
-    <label for="music-title">Просто рядом</label>
-		<div class="window">
-    <p>ПОСЛЕДНИЙ РЕЛИЗ</p>
-      </div>
-	 </div>
-	</div>
+  <div class="music-cover-1">
+    <img src="images/Просто рядом.webp" alt="Igor Leskov - Просто рядом" width="300" height="300">
+    <audio src="audio/Просто рядом.mp3" preload="metadata"></audio>
+    <input type="range" class="seek-bar" value="0" min="0" step="0.1" aria-label="Ползунок для перемотки аудиозаписи">
+    <button class="play-button" data-src="audio/Просто рядом.mp3">&#9658;</button>
+  </div>
+  <div class="music-info">
+    <label>Просто рядом</label>
+    <div class="window"><p>ПОСЛЕДНИЙ РЕЛИЗ</p></div>
+  </div>
+    </div>
 	<div class="music-item">
       <div class="music-cover">
         <img src="images/Повторил.webp" alt="Igor Leskov - Повторил" width="300" height="300" loading="auto">
-	      <audio id="audio" src="audio/Повторил.mp3" preload="metadata"></audio>
-        <input type="range" class="seek-bar" value="0" min="0" max="100" step="0.1" aria-label="Ползунок для перемотки аудиозаписи">
+	      <audio src="audio/Повторил.mp3" preload="metadata"></audio>
+        <input type="range" class="seek-bar" value="0" min="0" step="0.1" aria-label="Ползунок для перемотки аудиозаписи">
         <button class="play-button" data-src="audio/Повторил.mp3">&#9658;</button>
       </div>
       <div class="music-info">
@@ -705,25 +701,27 @@
 	<script src="scripts/slide_image.js" defer></script>
 
    <script>
-const audio = document.getElementById("audio");
-const seekBar = document.querySelector(".seek-bar");
+document.querySelectorAll('.music-item').forEach(item => {
+  const audio = item.querySelector('audio');
+  const seekBar = item.querySelector('.seek-bar');
+  const playButton = item.querySelector('.play-button');
 
-// Когда загружен мета (длина доступна)
-audio.addEventListener("loadedmetadata", () => {
-  seekBar.max = audio.duration;
-});
+  // Устанавливаем max в зависимости от длительности трека
+  audio.addEventListener("loadedmetadata", () => {
+    seekBar.max = audio.duration;
+  });
 
-// Обновлять ползунок по ходу воспроизведения
-audio.addEventListener("timeupdate", () => {
-  seekBar.value = audio.currentTime;
-  const percent = (audio.currentTime / audio.duration) * 100;
-  seekBar.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${percent}%, #c7c7c7 ${percent}%)`;
-});
+  // Обновление ползунка по мере воспроизведения
+  audio.addEventListener("timeupdate", () => {
+    seekBar.value = audio.currentTime;
+    const percent = (audio.currentTime / audio.duration) * 100;
+    seekBar.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${percent}%, #c7c7c7 ${percent}%)`;
+  });
 
-// При перемещении ползунка вручную
-seekBar.addEventListener("input", () => {
-  audio.currentTime = seekBar.value;
-});
+  // Перемотка вручную
+  seekBar.addEventListener("input", () => {
+    audio.currentTime = seekBar.value;
+  });
 </script>
 	
 	  <script>
