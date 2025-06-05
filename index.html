@@ -706,17 +706,15 @@
 	<script src="scripts/slide_image.js" defer></script>
 
    <script>
-document.querySelectorAll('.music-item').forEach(item => {
-  const audio = item.querySelector('audio');
-  const seekBar = item.querySelector('.seek-bar');
-  const playButton = item.querySelector('.play-button');
+const seekBar = document.querySelector('.seek-bar');
+const audio = new Audio('audio/Просто рядом.mp3');
 
-  audio.addEventListener('timeupdate', () => {
-  const progress = (audio.currentTime / audio.duration) * 100;
+audio.addEventListener('timeupdate', () => {
+  const value = (audio.currentTime / audio.duration) * 100;
   seekBar.value = audio.currentTime;
 
-  // Обновление визуальной полосы:
-  seekBar.style.background = `linear-gradient(to right, #397fb8 ${progress}%, #c7c7c7 ${progress}%)`;
+  // Обновляем заливку
+  seekBar.style.background = `linear-gradient(to right, #397fb8 ${value}%, #c7c7c7 ${value}%)`;
 });
 
   // Обновление ползунка по мере воспроизведения
