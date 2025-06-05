@@ -709,42 +709,43 @@
   const audio = document.getElementById('audio');
   const seekBar = document.getElementById('seekBar');
 
-  // Функция обновления заливки ползунка
-  function updateSeekBarBackground() {
-    const value = Number(seekBar.value);
-    const max = Number(seekBar.max) || 1; // защита от деления на 0
+  function updateSeekBarBackground(value, max) {
     const percent = (value / max) * 100;
     seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
   }
 
-  // Устанавливаем max и начальную заливку при загрузке метаданных
+  // При загрузке метаданных
   audio.addEventListener('loadedmetadata', () => {
-    seekBar.max = audio.duration.toString();
+    seekBar.max = audio.duration;
 
-    // Восстанавливаем позицию, если была сохранена
     const saved = localStorage.getItem("audioPosition");
     if (saved && !isNaN(saved)) {
-      audio.currentTime = Number(saved);
+      audio.currentTime = parseFloat(saved);
       seekBar.value = saved;
+    } else {
+      seekBar.value = 0;
     }
 
-    updateSeekBarBackground();
+    updateSeekBarBackground(seekBar.value, seekBar.max);
   });
 
-  // Обновление ползунка по мере воспроизведения + сохранение позиции
+  // Обновление при воспроизведении
   audio.addEventListener("timeupdate", () => {
-    seekBar.value = audio.currentTime.toString();
+    seekBar.value = audio.currentTime;
     localStorage.setItem("audioPosition", audio.currentTime);
-    updateSeekBarBackground();
+    updateSeekBarBackground(seekBar.value, seekBar.max);
   });
 
-  // Перемотка вручную + обновление заливки
+  // Обновление при перемотке вручную (мышь, тач, стрелки)
   seekBar.addEventListener("input", () => {
-    audio.currentTime = Number(seekBar.value);
-    updateSeekBarBackground();
+    updateSeekBarBackground(seekBar.value, seekBar.max);
+  });
+
+  // Применяем изменение позиции после отпускания ползунка
+  seekBar.addEventListener("change", () => {
+    audio.currentTime = parseFloat(seekBar.value);
   });
 </script>
-
    
    </body>
   </html>
