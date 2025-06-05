@@ -711,10 +711,13 @@ document.querySelectorAll('.music-item').forEach(item => {
   const seekBar = item.querySelector('.seek-bar');
   const playButton = item.querySelector('.play-button');
 
-  // Устанавливаем max в зависимости от длительности трека
-  audio.addEventListener("loadedmetadata", () => {
-    seekBar.max = audio.duration;
-  });
+  audio.addEventListener('timeupdate', () => {
+  const progress = (audio.currentTime / audio.duration) * 100;
+  seekBar.value = audio.currentTime;
+
+  // Обновление визуальной полосы:
+  seekBar.style.background = `linear-gradient(to right, #397fb8 ${progress}%, #c7c7c7 ${progress}%)`;
+});
 
   // Обновление ползунка по мере воспроизведения
   audio.addEventListener("timeupdate", () => {
