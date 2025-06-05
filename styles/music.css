@@ -92,27 +92,33 @@
            height: 5px;
            -webkit-appearance: none;
            appearance: none;
-           background: #c7c7c7;
+           background: linear-gradient(to right, rgb(57 130 184) 0%, #c7c7c7 0%);
+           border-radius: 5px;
            outline: none;
+	   margin: 0; 
+           padding: 0;
         }
 
         .seek-bar::-webkit-slider-thumb {
            -webkit-appearance: none;
-           appearance: none;
-           width: 12px;
-           height: 12px;
-           background: #242424;
-           border-radius: 50%;
-           cursor: pointer;
-        }
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: #242424;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            margin-top: 0px;
+            z-index: 1;
+         }
 
-        .seek-bar::-moz-range-thumb {
-           width: 12px;
-           height: 12px;
-           background: #333;
-           border-radius: 50%;
-           cursor: pointer;
-        }
+         .seek-bar::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            background: #333;
+            border-radius: 50%;
+            cursor: pointer;
+         }
 
         .playing {
            background-color: rgb(57 130 184);
