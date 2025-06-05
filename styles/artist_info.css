@@ -20,7 +20,28 @@
         .artist-image {
          width: calc(33.33% - 20px);
          text-align: center;
+         position: relative; /* Для позиционирования дочерних элементов */
+         margin-top: 30px;
+  border-radius: 10px;
+  overflow: hidden; /* Чтобы текст не выходил за края */
+                
         }
+
+
+      .artist-image .label {
+  position: absolute;
+  top: 43px; /* отступ сверху */
+  left: 60px; /* отступ слева */
+  background: rgb(245 245 245); /* полупрозрачный фон */
+  color: #242424;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  user-select: none;
+        }
+              
+  
 
         .artist-image img:hover {
         
@@ -34,3 +55,4 @@
          border: 5px solid #242424;
          margin-top: 30px;
         }
+
