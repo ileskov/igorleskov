@@ -29,7 +29,8 @@
         }
 
         .window {
-            background-color: #F44336;
+            background-color: #3982b8;
+	    color: #242424;
             border-radius: 10px 10px 0 0;
             padding: 0;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
