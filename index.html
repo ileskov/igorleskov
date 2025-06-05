@@ -736,10 +736,12 @@
     updateSeekBarBackground(seekBar.value, seekBar.max);
   });
 
-  // Обновление при перемотке вручную (мышь, тач, стрелки)
   seekBar.addEventListener("input", () => {
-    updateSeekBarBackground(seekBar.value, seekBar.max);
-  });
+  const value = parseFloat(seekBar.value);
+  const max = parseFloat(seekBar.max) || 1;
+  const percent = (value / max) * 100;
+  seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%)`;
+});
 
   // Применяем изменение позиции после отпускания ползунка
   seekBar.addEventListener("change", () => {
