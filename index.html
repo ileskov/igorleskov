@@ -703,6 +703,15 @@
 	<script src="scripts/cookie.js" defer></script>
 	<script src="scripts/slide_image.js" defer></script>
 
+    <script>
+  const seekBar = document.querySelector('.seek-bar');
+
+  seekBar.addEventListener('input', function () {
+    const value = (this.value - this.min) / (this.max - this.min) * 100;
+    this.style.background = `linear-gradient(to right, rgb(57 130 184) 0%, rgb(57 130 184) ${value}%, #c7c7c7 ${value}%, #c7c7c7 100%)`;
+  });
+</script>
+	
 	  <script>
        window.addEventListener('load', function() {
   var frames = document.querySelectorAll('.logo .frame');
