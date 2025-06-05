@@ -88,38 +88,54 @@
         }
 
         .seek-bar {
-           width: 100%;
-           height: 5px;
-           -webkit-appearance: none;
-           appearance: none;
-           background: linear-gradient(to right, rgb(57 130 184) 0%, #c7c7c7 0%);
-           border-radius: 5px;
-           outline: none;
-	   margin: 0; 
-           padding: 0;
-        }
+  width: 100%;
+  height: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, rgb(57 130 184) 0%, #c7c7c7 0%);
+  border-radius: 5px;
+  outline: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
 
-        .seek-bar::-webkit-slider-thumb {
-           -webkit-appearance: none;
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            background: #242424;
-            border-radius: 50%;
-            cursor: pointer;
-            position: relative;
-            margin-top: 0px;
-            z-index: 1;
-         }
+/* Скрываем стандартный трек в WebKit, он будет прозрачным — градиент задаём через JS */
+.seek-bar::-webkit-slider-runnable-track {
+  height: 5px;
+  background: transparent;
+  border-radius: 5px;
+}
 
-         .seek-bar::-moz-range-thumb {
-            width: 12px;
-            height: 12px;
-            background: #333;
-            border-radius: 50%;
-            cursor: pointer;
-         }
+/* Thumb для Chrome, Safari */
+.seek-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #242424;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -4px; /* центрирование относительно трека */
+  z-index: 1;
+  position: relative;
+}
 
+/* Thumb для Firefox */
+.seek-bar::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Трек для Firefox — тоже должен быть прозрачным */
+.seek-bar::-moz-range-track {
+  height: 5px;
+  background: transparent;
+  border-radius: 5px;
+}
         .playing {
            background-color: rgb(57 130 184);
         }
