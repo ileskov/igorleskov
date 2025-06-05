@@ -147,7 +147,7 @@
     <div class="music-item">
   <div class="music-cover-1">
     <img src="images/Просто рядом.webp" alt="Igor Leskov - Просто рядом" width="300" height="300">
-    <audio id="audio" src="audio/Просто рядом.mp3"></audio>
+    <audio id="audio" src="audio/Просто рядом.mp3" preload="metadata"</audio>
 <input type="range" id="seekBar" class="seek-bar" value="0" min="0" step="0.01" aria-label="Ползунок для перемотки аудиозаписи">
     <button class="play-button" data-src="audio/Просто рядом.mp3">&#9658;</button>
   </div>
@@ -705,10 +705,11 @@
 	<script src="scripts/cookie.js" defer></script>
 	<script src="scripts/slide_image.js" defer></script>
 
-  <script>
+ <script>
   const audio = document.getElementById('audio');
   const seekBar = document.getElementById('seekBar');
 
+  // Обновление градиента
   function updateSeekBarBackground(value, max) {
     const percent = (value / max) * 100;
     seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
@@ -717,7 +718,6 @@
   // При загрузке метаданных
   audio.addEventListener('loadedmetadata', () => {
     seekBar.max = audio.duration;
-
     const saved = localStorage.getItem("audioPosition");
     if (saved && !isNaN(saved)) {
       audio.currentTime = parseFloat(saved);
@@ -725,7 +725,6 @@
     } else {
       seekBar.value = 0;
     }
-
     updateSeekBarBackground(seekBar.value, seekBar.max);
   });
 
@@ -736,14 +735,12 @@
     updateSeekBarBackground(seekBar.value, seekBar.max);
   });
 
+  // Перемещение ползунка (в реальном времени)
   seekBar.addEventListener("input", () => {
-  const value = parseFloat(seekBar.value);
-  const max = parseFloat(seekBar.max) || 1;
-  const percent = (value / max) * 100;
-  seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%)`;
-});
+    updateSeekBarBackground(seekBar.value, seekBar.max);
+  });
 
-  // Применяем изменение позиции после отпускания ползунка
+  // Применить перемотку после отпускания
   seekBar.addEventListener("change", () => {
     audio.currentTime = parseFloat(seekBar.value);
   });
