@@ -46,7 +46,7 @@
         }
 		
 	.music-cover:hover {
-           transform: scale(1.0);
+           transform: scale(0.9);
         }
 
         .music-cover img {
@@ -76,7 +76,7 @@
         }
 
         .play-button:hover {
-           background-color: rgba(255, 255, 255, 0.9);
+           background-color: rgb(57 130 184);
         }
 
         .music-info {
@@ -111,7 +111,7 @@
         }
 
         .playing {
-           background-color: rgba(255, 255, 255, 0.8);
+           background-color: rgb(57 130 184);
         }
 
         .image-description {
