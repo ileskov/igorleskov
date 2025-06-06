@@ -22,7 +22,7 @@
         }
 
         .music-container::-webkit-scrollbar-thumb:hover {
-           background: #3982b8;
+           background: #00336a;
         }
 
         .music-item {
@@ -80,7 +80,7 @@
         }
 
         .play-button:hover {
-           background-color: rgb(57 130 184);
+           background-color: rgb(0 51 106);
         }
 
         .music-info {
@@ -92,7 +92,7 @@
   height: 6px;
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(to right, #397fb8 0%, #c7c7c7 0%);
+  background: linear-gradient(to right, #00336a 0%, #c7c7c7 0%);
   border-radius: 5px;
   outline: none;
   cursor: pointer;
@@ -134,7 +134,7 @@
 }
 
         .playing {
-           background-color: rgb(57 130 184);
+           background-color: rgb(0 51 106);
         }
 
         .image-description {
