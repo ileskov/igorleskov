@@ -43,3 +43,7 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
+ .playing {
+           background-color: rgb(57 130 184);
+        }
