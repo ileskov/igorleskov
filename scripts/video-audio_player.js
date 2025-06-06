@@ -1,7 +1,7 @@
   // Функция обновления заливки прогресс-бара
   function updateSeekBarBackground(seekBar, value, max) {
     const percent = (value / max) * 100;
-    seekBar.style.background = `linear-gradient(to right, #397fb8 0%, #397fb8 ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
+    seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
   }
 
   document.addEventListener('DOMContentLoaded', function() {
