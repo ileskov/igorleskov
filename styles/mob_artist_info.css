@@ -25,10 +25,38 @@
          text-align: center;
          position: relative; /* Для позиционирования дочерних элементов */
          margin-top: 30px;
-  border-radius: 10px;
+  border-radius: 1px;
   overflow: hidden; /* Чтобы текст не выходил за края */
                 
         }
+
+      .label {
+  position: absolute;
+  background: rgb(245, 245, 245);
+  color: #242424;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  user-select: none;
+}
+
+/* Индивидуальные настройки позиций */
+.label-1 {
+  top: 20px;
+  left: 20px;
+}
+
+.label-2 {
+  top: 40px;
+  right: 20px;
+}
+
+.label-3 {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
         .artist-image img:hover {
         }
