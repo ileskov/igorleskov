@@ -30,7 +30,29 @@
                 
         }
 
-      .label {
+       .label-1 {
+  position: absolute;
+  background: rgb(245, 245, 245);
+  color: #242424;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  user-select: none;
+}
+
+  .label-2 {
+  position: absolute;
+  background: rgb(245, 245, 245);
+  color: #242424;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 14px;
+  user-select: none;
+}
+
+  .label-3 {
   position: absolute;
   background: rgb(245, 245, 245);
   color: #242424;
@@ -43,23 +65,23 @@
 
 /* Индивидуальные настройки позиций */
 .label-1 {
-  top: 20px;
-  left: 20px;
+  z-index: 2;
+  top: 230px;
+  left: 116px;
 }
 
 .label-2 {
-  top: 40px;
-  right: 20px;
+  top: 672px;
+  z-index: 2;
+  right: 236px;
 }
 
 .label-3 {
-  bottom: 20px;
-  left: 50%;
+  bottom: -426px;
+  z-index: 2;
+  left: 149px;
   transform: translateX(-50%);
 }
-
-        .artist-image img:hover {
-        }
 
         .artist-image {
            width: calc(100% - 20px);
