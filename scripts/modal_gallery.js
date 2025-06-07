@@ -1,4 +1,4 @@
-var images = ["images/image1.webp", "images/image2.webp", "images/image3.webp", "images/image4.webp", "images/image5.webp", "images/image7.webp", "images/image8.webp", "images/image9.webp", "images/image6.webp"];
+var images = ["images/image1.webp", "images/image2.webp", "images/image3.webp", "images/image4.webp", "images/image5.webp", "images/image6.webp", "images/image7.webp", "images/image8.webp", "images/image9.webp", "images/image10.webp", "images/image11.webp", "images/image12.webp", "images/image13.webp", "images/image14.webp", "images/image15.webp"];
 var currentImageIndex = 0;
 var currentAudioPlayer = null;
 function openModal(imageSrc) {
