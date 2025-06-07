@@ -136,11 +136,11 @@
     <div class="music-container">
     <div class="music-item">
   <div class="music-cover-1">
-    <img src="images/Просто рядом.webp" alt="Igor Leskov - Просто рядом" width="300" height="300">
-    <audio id="audio" src="audio/Просто рядом.mp3" preload="metadata"></audio>
-<input type="range" id="seekBar" class="seek-bar" value="0" min="0" step="0.01" aria-label="Ползунок для перемотки аудиозаписи">
+    <img src="images/Просто рядом.webp" alt="Igor Leskov - Просто рядом" width="300" height="300" loading="auto">
+    <audio src="audio/Просто рядом.mp3" preload="metadata"></audio>
+    <input type="range" class="seek-bar" value="0" min="0" step="0.1" aria-label="Ползунок для перемотки аудиозаписи">
     <button class="play-button" data-src="audio/Просто рядом.mp3">&#9658;</button>
-     <a href="audio/Просто рядом.mp3" download class="download-button">Скачать</a>
+    <a href="audio/Просто рядом.mp3" download class="download-button">Скачать</a> <!-- ← вот эта строка -->
   </div>
   <div class="music-info">
     <label>Просто рядом</label>
@@ -149,7 +149,6 @@
   </div>
     </div>
       </div>
-	</div>
 	<div class="music-item">
       <div class="music-cover">
         <img src="images/Повторил.webp" alt="Igor Leskov - Повторил" width="300" height="300" loading="auto">
