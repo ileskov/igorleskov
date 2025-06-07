@@ -16,12 +16,13 @@
 }
 
 .window {
-    background-color: #e83f33;
+    background-color: #00336a;
     border-radius: 10px 10px 0 0;
     padding: 0;
+    color: #ffff;
     box-shadow: 0 0 10px rgba(0,0,0,.1);
     position: relative;
-    top: -234px
+    top: -231px
 }
 
 .window h3 {
