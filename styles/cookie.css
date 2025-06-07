@@ -1,11 +1,11 @@
-        #cookie-consent-bar {
+       #cookie-consent-bar {
           display: none;
           position: fixed;
           top: 0;
           left: 0;
           width: 100%;
           background-color: #242424; 
-          color: #c7c7c7; 
+          color: #ffffff; 
           padding: 10px 20px;
           text-align: center;
           z-index: 9999;
@@ -41,5 +41,6 @@
         }
 
         #cookie-consent-bar button:hover {
-          background-color: #0084b8;
-        }
+  background-color: #00336a; /* белый фон при наведении */
+  color: #ffffff;            /* текст остаётся тёмным */
+}
