@@ -28,7 +28,7 @@
         }
 
 
-      .artist-image .label {
+       .artist-image .label {
   position: absolute;
   top: 43px; /* отступ сверху */
   left: 60px; /* отступ слева */
@@ -39,13 +39,49 @@
   font-weight: bold;
   font-size: 14px;
   user-select: none;
-        }
-              
-  
+  overflow: hidden; /* обязательно для псевдоэлемента */
+  z-index: 1;
+}
 
-        .artist-image img:hover {
-        
-        }
+/* Анимированная золотая рамка-змейка */
+.artist-image .label::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 5px;
+  padding: 2px;
+  background: linear-gradient(
+    130deg,
+    transparent,
+    gold,
+    transparent
+  );
+  background-size: 300% 300%;
+  animation: snake-glow 2s linear infinite;
+  z-index: -1;
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0); 
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: destination-out;
+  box-sizing: border-box;
+}
+
+/* Ключевые кадры для движения "змейки" */
+@keyframes snake-glow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
 
         .artist-image img {
          width: 300px;
