@@ -120,7 +120,7 @@
 }
 
 .seek-bar:hover::-webkit-slider-thumb {
-  background: #00336a;
+  background: #ffd700;
 }
 
 .seek-bar::-moz-range-track {
