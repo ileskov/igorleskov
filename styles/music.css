@@ -119,6 +119,10 @@
   z-index: 2;
 }
 
+.seek-bar:hover::-webkit-slider-thumb {
+  background: #00336a;
+}
+
 .seek-bar::-moz-range-track {
   height: 6px;
   background: transparent;
