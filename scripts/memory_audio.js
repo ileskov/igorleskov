@@ -19,4 +19,4 @@ function checkNetworkLoad(url, dataTransferred) {
 
 var dataTransferred = [10000, 20000, 30000]; 
 
-console.log(checkNetworkLoad("https://ileskov.online", dataTransferred));
+console.log(checkNetworkLoad("https://ileskov.github.io/igorleskov", dataTransferred));
