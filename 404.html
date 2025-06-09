@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="images/dark-favicon.png" type="image/x-icon">
-    <link rel="canonical" href="https://igor-leskov.github.io/ileskov/">
+    <link rel="canonical" href="https://ileskov.github.io/igorleskov/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Страница не найдена</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #c7c7c7;
+            background: linear-gradient(135deg, #f2f2f2, #c7c7c7);
             color: #242424;
             display: flex;
             flex-direction: column;
@@ -24,6 +24,7 @@
         .container {
             text-align: center;
             animation: fadeIn 1s ease-out;
+            position: relative;
         }
 
         h1 {
@@ -31,13 +32,8 @@
             margin-bottom: 0;
         }
 
-        p {
-            font-size: 2em;
-            margin-top: 0;
-        }
-
         .description {
-            font-size: 1.2em;
+            font-size: 1.5em;
             margin-top: 20px;
         }
 
@@ -46,7 +42,7 @@
             padding: 15px 30px;
             background-color: #242424;
             color: #fff;
-            font-size: 1.5em;
+            font-size: 1.2em;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -54,36 +50,94 @@
             transition: background-color 0.3s;
         }
 
+        .button:hover {
+            background-color: #444;
+        }
+
+        .vinyl {
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, #333 40%, #111 85%);
+            border: 5px solid #fff;
+            border-radius: 50%;
+            margin: 20px auto;
+            position: relative;
+            animation: spin 5s linear infinite;
+        }
+
+        .vinyl::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            background: crimson;
+            border-radius: 50%;
+        }
+
+        .notes {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+
+        .note {
+            font-size: 2rem;
+            animation: floatNote 3s infinite;
+        }
+
+        .note:nth-child(2) { animation-delay: 0.3s; }
+        .note:nth-child(3) { animation-delay: 0.6s; }
+
+        .animated {
+            animation: shake 0.6s infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @keyframes shake {
             0% { transform: translateX(0); }
-            10% { transform: translateX(-10px) rotate(-5deg); }
-            20% { transform: translateX(10px) rotate(5deg); }
-            30% { transform: translateX(-10px) rotate(-5deg); }
-            40% { transform: translateX(10px) rotate(5deg); }
-            50% { transform: translateX(-10px) rotate(-5deg); }
-            60% { transform: translateX(10px) rotate(5deg); }
-            70% { transform: translateX(-10px) rotate(-5deg); }
-            80% { transform: translateX(10px) rotate(5deg); }
-            90% { transform: translateX(-10px) rotate(-5deg); }
+            10% { transform: translateX(-8px) rotate(-2deg); }
+            20% { transform: translateX(8px) rotate(2deg); }
+            30% { transform: translateX(-6px) rotate(-1.5deg); }
+            40% { transform: translateX(6px) rotate(1.5deg); }
+            50% { transform: translateX(-4px); }
+            60% { transform: translateX(4px); }
+            70% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
             100% { transform: translateX(0); }
         }
 
-        .animated {
-            animation: shake 0.6s;
-            animation-iteration-count: infinite;
+        @keyframes floatNote {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-100px); opacity: 0; }
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="animated glitch"><span>4</span><span>0</span><span>4</span></h1>
-        <p class="description">Упс! Возможно, страница, которую вы ищете, была удалена или временно недоступна.</p>
+        <div class="vinyl"></div>
+        <h1 class="animated">404</h1>
+        <p class="description">Упс! Кажется, ритм потерян — страница не найдена.</p>
         <button class="button" onclick="redirectToHome()">На главную</button>
+        <div class="notes">
+            <div class="note">🎵</div>
+            <div class="note">🎶</div>
+            <div class="note">🎼</div>
+        </div>
     </div>
     <script>
         function redirectToHome() {
