@@ -81,6 +81,7 @@
 
         .play-button:hover {
            background-color: rgb(0 51 106);
+		color: rgb(255 255 255);
         }
 
         .music-info {
