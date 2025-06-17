@@ -31,7 +31,7 @@
        .artist-image .label {
   position: absolute;
   top: 43px; /* отступ сверху */
-  left: 155px; /* отступ слева */
+  left: 153px; /* отступ слева */
   background: rgb(245 245 245); /* полупрозрачный фон */
   color: #242424;
   padding: 5px 10px;
