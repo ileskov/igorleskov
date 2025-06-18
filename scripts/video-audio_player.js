@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     audioPlayer.addEventListener("loadedmetadata", function() {
       seekBar.max = audioPlayer.duration;
       var savedTime = localStorage.getItem(trackId);
-      if (savedTime && !isNaN(savedTime)) {
+      if (savedTime) {
         audioPlayer.currentTime = parseFloat(savedTime);
         seekBar.value = parseFloat(savedTime);
       } else {
