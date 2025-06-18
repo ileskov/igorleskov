@@ -88,13 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
     var playButton = item.querySelector(".play-button");
     var audioPlayer = item.querySelector("audio"); // ожидается <audio> внутри music-item
     var seekBar = item.querySelector(".seek-bar");
-    var trackId = item.dataset.id; // Получаем уникальный идентификатор трека
+    var trackId = item.dataset.id; // ← теперь используем data-id
 
-    if (!audioPlayer || !seekBar || !playButton) return;
+    if (!audioPlayer || !seekBar || !playButton || !trackId) return;
 
     audioPlayer.addEventListener("loadedmetadata", function() {
       seekBar.max = audioPlayer.duration;
-      var savedTime = localStorage.getItem(trackId);
+      var savedTime = localStorage.getItem("track_" + trackId);
       if (savedTime) {
         audioPlayer.currentTime = parseFloat(savedTime);
         seekBar.value = parseFloat(savedTime);
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       } else {
         audioPlayer.pause();
-        localStorage.setItem(trackId, audioPlayer.currentTime);
+        localStorage.setItem("track_" + trackId, audioPlayer.currentTime);
         playButton.innerHTML = "&#9658;";
         playButton.classList.remove("playing");
       }
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
       playButton.innerHTML = "&#9658;";
       seekBar.value = 0;
       updateSeekBarBackground(seekBar, 0, seekBar.max);
-      localStorage.removeItem(trackId);
+      localStorage.removeItem("track_" + trackId);
       if (index < musicItems.length - 1) {
         var nextButton = musicItems[index + 1].querySelector(".play-button");
         if (nextButton) nextButton.click();
@@ -144,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     audioPlayer.addEventListener("timeupdate", function() {
       seekBar.value = audioPlayer.currentTime;
-      localStorage.setItem(trackId, audioPlayer.currentTime);
       updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
     });
 
@@ -154,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     seekBar.addEventListener("change", function() {
       audioPlayer.currentTime = seekBar.value;
-      localStorage.setItem(trackId, seekBar.value);
+      localStorage.setItem("track_" + trackId, seekBar.value);
     });
 
     audioPlayer.addEventListener('play', function() {
