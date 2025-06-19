@@ -89,9 +89,13 @@
     height: 5px;
     -webkit-appearance: none;
     appearance: none;
-    background: #c7c7c7;
+    background: linear-gradient(to right, #00336a 0%, #c7c7c7 0%);
     border-radius: 5px;
     outline: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 10px 0;
+    transition: background 0.2s;
 }
 
 .seek-bar::-webkit-slider-thumb {
