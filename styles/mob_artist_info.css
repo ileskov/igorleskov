@@ -18,19 +18,25 @@
         }
     }
 
-        .artist-image img {
-        max-width: 100%;
-        border-radius: 50%;
-        border: 5px solid #242424;
-         text-align: center;
-         position: relative; /* Для позиционирования дочерних элементов */
-         margin-top: 30px;
+        .artist-image {
+  position: relative; /* чтобы label позиционировался относительно этого блока */
+  width: calc(100% - 20px);
+  text-align: center;
+  margin-top: 30px;
   border-radius: 10px;
-  overflow: hidden; /* Чтобы текст не выходил за края */
-                
-        }
+  overflow: hidden;
+}
 
-       .label-1 {
+.artist-image img {
+  max-width: 100%;
+  border-radius: 10px;
+  border: 5px solid #242424;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Общие стили для всех label */
+.label-1, .label-2, .label-3 {
   position: absolute;
   background: rgb(245, 245, 245);
   color: #242424;
@@ -39,51 +45,46 @@
   font-weight: bold;
   font-size: 14px;
   user-select: none;
-}
-
-  .label-2 {
-  position: absolute;
-  background: rgb(245, 245, 245);
-  color: #242424;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 14px;
-  user-select: none;
-}
-
-  .label-3 {
-  position: absolute;
-  background: rgb(245, 245, 245);
-  color: #242424;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 14px;
-  user-select: none;
-}
-
-/* Индивидуальные настройки позиций */
-.label-1 {
+  white-space: nowrap;
   z-index: 2;
+}
+
+/* Стили для десктопа (текущие индивидуальные позиции) */
+.label-1 {
   top: 230px;
   left: 116px;
 }
 
 .label-2 {
   top: 672px;
-  z-index: 2;
   right: 236px;
 }
 
 .label-3 {
   bottom: -426px;
-  z-index: 2;
   left: 149px;
   transform: translateX(-50%);
 }
 
-        .artist-image {
-           width: calc(100% - 20px);
-           text-align: center;
-        }
+/* Мобильная версия */
+@media (max-width: 480px) {
+  .label-1, .label-2, .label-3 {
+    bottom: 10px;           /* расположить внизу */
+    left: 50%;             /* по центру по горизонтали */
+    transform: translateX(-50%);
+    font-size: 12px;
+    padding: 4px 8px;
+    background: rgba(245, 245, 245, 0.9); /* чуть прозрачный фон */
+    max-width: 90%;
+    white-space: normal; /* чтобы текст переносился */
+  }
+
+  /* Убираем индивидуальное позиционирование, чтобы все одинаково выглядело */
+  .label-1, .label-2, .label-3 {
+    top: auto !important;
+    right: auto !important;
+    bottom: 10px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+  }
+}
