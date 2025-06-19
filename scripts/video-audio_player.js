@@ -1,4 +1,3 @@
-// Функция обновления заливки прогресс-бара
 function updateSeekBarBackground(seekBar, value, max) {
   const percent = (value / max) * 100;
   seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
@@ -9,28 +8,35 @@ document.addEventListener('DOMContentLoaded', function () {
   const seekBar = document.getElementById('seekBar');
 
   if (audio && seekBar) {
-    function restoreAudioPosition() {
+    // Ждём и метаданные, и DOM
+    audio.addEventListener('loadedmetadata', () => {
       seekBar.max = audio.duration;
+
       const saved = localStorage.getItem("audioPosition");
-      const time = saved && !isNaN(saved) ? parseFloat(saved) : 0;
-      audio.currentTime = time;
-      seekBar.value = time;
+      const savedTime = saved && !isNaN(saved) ? parseFloat(saved) : 0;
 
-      requestAnimationFrame(() => {
-        updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
-      });
-    }
+      // Ждём полной готовности элемента и DOM, чтобы не "перебили" value
+      audio.currentTime = savedTime;
+      seekBar.value = savedTime;
 
-    if (audio.readyState >= 1) {
-      restoreAudioPosition();
-    } else {
-      audio.addEventListener('loadedmetadata', restoreAudioPosition);
-    }
+      // Гарантированная отрисовка фона после установки значений
+      setTimeout(() => {
+        updateSeekBarBackground(seekBar, savedTime, audio.duration);
+      }, 50);
+    });
 
     audio.addEventListener("timeupdate", () => {
       seekBar.value = audio.currentTime;
       localStorage.setItem("audioPosition", audio.currentTime);
       updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
+    });
+
+    audio.addEventListener("pause", () => {
+      localStorage.setItem("audioPosition", audio.currentTime);
+    });
+
+    window.addEventListener("beforeunload", () => {
+      localStorage.setItem("audioPosition", audio.currentTime);
     });
 
     seekBar.addEventListener("input", () => {
@@ -42,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
       audio.currentTime = time;
       localStorage.setItem("audioPosition", time);
     });
+  }
 
     audio.addEventListener("pause", () => {
       localStorage.setItem("audioPosition", audio.currentTime);
