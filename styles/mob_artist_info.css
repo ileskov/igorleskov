@@ -1,107 +1,66 @@
 .artist-info {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  animation: slideIn 1s ease;
-}
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
+          animation: slideIn 1s ease; 
+        }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+        @keyframes slideIn {
+           from {
+        opacity: 0;
+        transform: translateY(-20px);
+        }
+         
+		to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
 
-.artist-image {
-  position: relative; /* для абсолютного позиционирования label */
-  width: calc(100% - 20px);
-  max-width: 300px; /* фиксируем максимальную ширину */
-  height: 300px;    /* фиксируем высоту для стабильного позиционирования */
-  text-align: center;
-  margin-top: 30px;
-}
-
-.artist-image img {
-  max-width: 100%;
-  border-radius: 50%;
-  border: 5px solid #242424;
+        .artist-image img {
+        max-width: 100%;
+        border-radius: 50%;
+        border: 5px solid #242424;
+         text-align: center;
+         position: relative; /* Для позиционирования дочерних элементов */
+         margin-top: 30px;
+  border-radius: 10px;
   overflow: hidden; /* Чтобы текст не выходил за края */
-  display: block;
-  margin: 0 auto;
-  height: 100%; /* чтобы заполнил высоту блока */
-  object-fit: cover; /* сохранение пропорций */
-  position: relative; /* не обязательно, можно убрать */
+                
+        }
+
+       .label-1, .label-2, .label-3 {
+    position: absolute;
+    background: rgb(245, 245, 245);
+    color: #242424;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    user-select: none;
+    z-index: 2;
 }
 
-/* Общие стили для всех label */
-.label-1, .label-2, .label-3 {
-  position: absolute;
-  background: rgb(245, 245, 245);
-  color: #242424;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  font-size: 14px;
-  user-select: none;
-  z-index: 2;
-  white-space: nowrap;
-}
-
-/* Индивидуальные позиции, адаптированные под фиксированный блок 300x300 */
+/* Для фиксации в верхнем левом углу контейнера */
 .label-1 {
-  top: 60%;     /* вместо 230px, % от высоты 300px */
-  left: 40%;    /* вместо 116px */
-  transform: translateX(-50%);
+    top: 0;
+    left: 0;
 }
 
+/* Если нужно, чтобы остальные были тоже фиксированы — подкорректируй им позиционирование */
 .label-2 {
-  top: 80%;    /* вместо 672px, уменьшено */
-  right: 20%;  /* вместо 236px */
-  transform: translateX(0);
+    top: 0;
+    left: 120px; /* Например, с отступом справа от label-1 */
 }
 
 .label-3 {
-  bottom: 15%; /* вместо -426px, теперь внутри блока */
-  left: 50%;   
-  transform: translateX(-50%);
+    top: 0;
+    left: 240px; /* Аналогично */
 }
 
-/* Мобильные правки */
-@media (max-width: 480px) {
-  .artist-image {
-    max-width: 250px;
-    height: 250px;
-  }
-
-  .label-1 {
-    top: 55%;
-    left: 50%;
-    font-size: 12px;
-    padding: 4px 8px;
-    background: rgba(245, 245, 245, 0.9);
-    white-space: normal;
-  }
-
-  .label-2 {
-    top: 75%;
-    right: 25%;
-    font-size: 12px;
-    padding: 4px 8px;
-    background: rgba(245, 245, 245, 0.9);
-    white-space: normal;
-  }
-
-  .label-3 {
-    bottom: 20%;
-    left: 50%;
-    font-size: 12px;
-    padding: 4px 8px;
-    background: rgba(245, 245, 245, 0.9);
-    white-space: normal;
-  }
-}
+        .artist-image {
+           width: calc(100% - 20px);
+          position: relative; /* Важно! */
+           text-align: center;
+        }
