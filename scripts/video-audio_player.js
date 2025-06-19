@@ -8,18 +8,15 @@ document.addEventListener('DOMContentLoaded', function () {
   const seekBar = document.getElementById('seekBar');
 
   if (audio && seekBar) {
-    // Ждём и метаданные, и DOM
     audio.addEventListener('loadedmetadata', () => {
       seekBar.max = audio.duration;
 
       const saved = localStorage.getItem("audioPosition");
       const savedTime = saved && !isNaN(saved) ? parseFloat(saved) : 0;
 
-      // Ждём полной готовности элемента и DOM, чтобы не "перебили" value
       audio.currentTime = savedTime;
       seekBar.value = savedTime;
 
-      // Гарантированная отрисовка фона после установки значений
       setTimeout(() => {
         updateSeekBarBackground(seekBar, savedTime, audio.duration);
       }, 50);
@@ -50,16 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-    audio.addEventListener("pause", () => {
-      localStorage.setItem("audioPosition", audio.currentTime);
-    });
-
-    window.addEventListener("beforeunload", () => {
-      localStorage.setItem("audioPosition", audio.currentTime);
-    });
-  }
-
-  // Работа с видео и списком музыки
+  // Видео и музыка из списка
   const videos = document.querySelectorAll('.video');
   const musicItems = document.querySelectorAll(".music-item");
   let currentVideo = null;
@@ -110,14 +98,14 @@ document.addEventListener('DOMContentLoaded', function () {
       seekBar.value = time;
 
       requestAnimationFrame(() => {
-        updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
+        updateSeekBarBackground(seekBar, time, audioPlayer.duration);
       });
     });
 
     audioPlayer.addEventListener("timeupdate", () => {
       seekBar.value = audioPlayer.currentTime;
       localStorage.setItem(audioKey, audioPlayer.currentTime);
-      updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
+      updateSeekBarBackground(seekBar, audioPlayer.currentTime, audioPlayer.duration);
     });
 
     seekBar.addEventListener("input", () => {
@@ -157,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
     audioPlayer.addEventListener("ended", () => {
       playButton.innerHTML = "&#9658;";
       seekBar.value = 0;
-      updateSeekBarBackground(seekBar, 0, parseFloat(seekBar.max));
+      updateSeekBarBackground(seekBar, 0, audioPlayer.duration);
       localStorage.removeItem(audioKey);
 
       if (index < musicItems.length - 1) {
