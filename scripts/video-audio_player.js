@@ -1,11 +1,16 @@
- // Функция обновления заливки прогресс-бара
-  function updateSeekBarBackground(seekBar, value, max) {
-    const percent = (value / max) * 100;
-    seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
-  }
+// Функция обновления заливки прогресс-бара
+function updateSeekBarBackground(seekBar, value, max) {
+  const percent = (value / max) * 100;
+  seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Блок для единственного аудио с id="audio" (если он есть)
+  // Переменные для отслеживания текущего аудио и видео
+  let currentAudioPlayer = null;
+  let currentPlayButton = null;
+  let currentVideo = null;
+
+  // --- Блок для единственного аудио с id="audio" (если нужен)
   const audio = document.getElementById('audio');
   const seekBar = document.getElementById('seekBar');
 
@@ -37,60 +42,57 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Блок для видео (если есть)
-  var videos = document.querySelectorAll('.video');
-  var currentVideo = null;
-  videos.forEach(function(video) {
-    video.addEventListener('loadeddata', function() {
-      var videoKey = video.dataset.key;
-      var savedTime = localStorage.getItem(videoKey);
-      if (savedTime) {
+  // --- Блок для видео (если есть)
+  const videos = document.querySelectorAll('.video');
+  videos.forEach(video => {
+    video.addEventListener('loadeddata', () => {
+      const videoKey = video.dataset.key;
+      const savedTime = localStorage.getItem(videoKey);
+      if (savedTime && !isNaN(savedTime)) {
         video.currentTime = parseFloat(savedTime);
       }
     });
 
-    video.addEventListener('play', function(event) {
+    video.addEventListener('play', event => {
       currentVideo = event.target;
-      videos.forEach(function(v) {
+      videos.forEach(v => {
         if (v !== currentVideo) v.pause();
       });
       if (currentAudioPlayer && !currentAudioPlayer.paused) {
         currentAudioPlayer.pause();
-        const prevButton = document.querySelector(".play-button.playing");
-        if (prevButton) {
-          prevButton.innerHTML = "&#9658;";
-          prevButton.classList.remove("playing");
+        if (currentPlayButton) {
+          currentPlayButton.innerHTML = "&#9658;";
+          currentPlayButton.classList.remove("playing");
         }
       }
     });
 
-    video.addEventListener('pause', function() {
+    video.addEventListener('pause', () => {
       localStorage.setItem(video.dataset.key, video.currentTime);
     });
 
-    video.addEventListener('ended', function() {
+    video.addEventListener('ended', () => {
       localStorage.removeItem(video.dataset.key);
     });
   });
 
-  // Блок для музыкальных треков
-  var musicItems = document.querySelectorAll(".music-item");
-  var currentAudioPlayer = null;
+  // --- Блок для музыкальных треков с кастомным управлением
+  const musicItems = document.querySelectorAll(".music-item");
 
-  musicItems.forEach(function(item, index) {
-    var playButton = item.querySelector(".play-button");
-    var audioPlayer = item.querySelector("audio");
-    var seekBar = item.querySelector(".seek-bar");
+  musicItems.forEach((item, index) => {
+    const playButton = item.querySelector(".play-button");
+    const audioPlayer = item.querySelector("audio");
+    const seekBar = item.querySelector(".seek-bar");
 
     if (!audioPlayer || !seekBar || !playButton) return;
 
-    // Используем id аудио как ключ для сохранения позиции
-    var storageKey = audioPlayer.id;
+    // Ключ для localStorage по id аудио
+    const storageKey = `audio-position-${audioPlayer.id}`;
 
-    audioPlayer.addEventListener("loadedmetadata", function() {
+    audioPlayer.addEventListener("loadedmetadata", () => {
       seekBar.max = audioPlayer.duration || 0;
-      var savedTime = localStorage.getItem(storageKey);
-      if (savedTime && !isNaN(savedTime)) {
+      const savedTime = localStorage.getItem(storageKey);
+      if (savedTime && !isNaN(savedTime) && savedTime < audioPlayer.duration) {
         audioPlayer.currentTime = parseFloat(savedTime);
         seekBar.value = parseFloat(savedTime);
       } else {
@@ -99,36 +101,36 @@ document.addEventListener('DOMContentLoaded', function() {
       updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
     });
 
-    audioPlayer.addEventListener("timeupdate", function() {
+    audioPlayer.addEventListener("timeupdate", () => {
       seekBar.value = audioPlayer.currentTime;
       updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
     });
 
-    seekBar.addEventListener("input", function() {
+    seekBar.addEventListener("input", () => {
       updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
     });
 
-    seekBar.addEventListener("change", function() {
+    seekBar.addEventListener("change", () => {
       audioPlayer.currentTime = parseFloat(seekBar.value);
       localStorage.setItem(storageKey, seekBar.value);
     });
 
-    playButton.addEventListener("click", function() {
+    playButton.addEventListener("click", () => {
+      // Пауза предыдущего трека, если другой играет
       if (currentAudioPlayer && currentAudioPlayer !== audioPlayer) {
         currentAudioPlayer.pause();
-        var prevButton = document.querySelector(".play-button.playing");
-        if (prevButton) {
-          prevButton.innerHTML = "&#9658;";
-          prevButton.classList.remove("playing");
+        if (currentPlayButton) {
+          currentPlayButton.innerHTML = "&#9658;";
+          currentPlayButton.classList.remove("playing");
         }
       }
-
-      currentAudioPlayer = audioPlayer;
 
       if (audioPlayer.paused) {
         audioPlayer.play();
         playButton.innerHTML = "&#10074;&#10074;"; // Пауза
         playButton.classList.add("playing");
+        currentAudioPlayer = audioPlayer;
+        currentPlayButton = playButton;
 
         if (currentVideo && !currentVideo.paused) {
           currentVideo.pause();
@@ -138,36 +140,37 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem(storageKey, audioPlayer.currentTime);
         playButton.innerHTML = "&#9658;"; // Воспроизведение
         playButton.classList.remove("playing");
+        currentAudioPlayer = null;
+        currentPlayButton = null;
       }
     });
 
-    audioPlayer.addEventListener("ended", function() {
+    audioPlayer.addEventListener("ended", () => {
       playButton.innerHTML = "&#9658;";
       seekBar.value = 0;
       updateSeekBarBackground(seekBar, 0, seekBar.max);
       localStorage.removeItem(storageKey);
+
       // Автопереход к следующему треку
       if (index < musicItems.length - 1) {
-        var nextButton = musicItems[index + 1].querySelector(".play-button");
-        if (nextButton) nextButton.click();
+        const nextPlayButton = musicItems[index + 1].querySelector(".play-button");
+        if (nextPlayButton) {
+          nextPlayButton.click();
+        }
       }
+      currentAudioPlayer = null;
+      currentPlayButton = null;
     });
+  });
 
-    audioPlayer.addEventListener('play', function() {
+  // При клике на play-button видео ставится на паузу
+  musicItems.forEach(item => {
+    const playButton = item.querySelector(".play-button");
+    playButton.addEventListener("click", () => {
       if (currentVideo && !currentVideo.paused) {
         currentVideo.pause();
       }
     });
   });
-
-  // Чтобы при клике на play-button видео ставилось на паузу
-  musicItems.forEach(function(item) {
-    var playButton = item.querySelector(".play-button");
-
-    playButton.addEventListener("click", function() {
-      if (currentVideo) {
-        currentVideo.pause();
-      }
-    });
-  });
 });
+
