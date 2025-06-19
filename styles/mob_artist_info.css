@@ -49,42 +49,37 @@
   z-index: 2;
 }
 
-/* Стили для десктопа (текущие индивидуальные позиции) */
-.label-1 {
-  top: 230px;
-  left: 116px;
-}
-
-.label-2 {
-  top: 672px;
-  right: 236px;
-}
-
-.label-3 {
-  bottom: -426px;
-  left: 149px;
-  transform: translateX(-50%);
-}
-
-/* Мобильная версия */
-@media (max-width: 480px) {
-  .label-1, .label-2, .label-3 {
-    bottom: 10px;           /* расположить внизу */
-    left: 50%;             /* по центру по горизонтали */
-    transform: translateX(-50%);
-    font-size: 12px;
-    padding: 4px 8px;
-    background: rgba(245, 245, 245, 0.9); /* чуть прозрачный фон */
-    max-width: 90%;
-    white-space: normal; /* чтобы текст переносился */
+  @media (max-width: 480px) { 
+    
+    .label-1 {   
+      bottom: 355px;          
+      left: 31.3%;  
+      transform: translateX(-50%);   
+      font-size: 12px;  
+      padding: 4px 8px;   
+      background: rgba(245, 245, 245, 0.9);   
+      white-space: normal;   
+      max-width: 90%;  } 
+    
+    .label-2 {  
+      bottom: 585.1px;      
+      left: 19.8%;            
+      transform: translateX(0);  
+      font-size: 12px;    
+      padding: 4px 8px;    
+      background: rgba(245, 245, 245, 0.9);    
+      white-space: normal;   
+      max-width: 90%;  }  
+    
+    .label-3 {
+    
+      bottom: 354.2px;      
+      right: 56.7%;            
+      transform: translateX(0);   
+      font-size: 12px;   
+      padding: 4px 8px;   
+      background: rgba(245, 245, 245, 0.9);  
+      white-space: normal;    
+      max-width: 90%;  }
+  
   }
-
-  /* Убираем индивидуальное позиционирование, чтобы все одинаково выглядело */
-  .label-1, .label-2, .label-3 {
-    top: auto !important;
-    right: auto !important;
-    bottom: 10px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-  }
-}
