@@ -1,5 +1,5 @@
 function updateSeekBarBackground(seekBar, value, max) {
-  const percent = (value / max) * 100;
+  const percent = Math.min((value / max) * 100, 100); // максимум 100%
   seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
 }
 
@@ -8,46 +8,56 @@ document.addEventListener('DOMContentLoaded', function () {
   const seekBar = document.getElementById('seekBar');
 
   if (audio && seekBar) {
+    const audioKey = audio.dataset.key || "audioPosition";
+
     audio.addEventListener('loadedmetadata', () => {
       seekBar.max = audio.duration;
 
-      const saved = localStorage.getItem("audioPosition");
+      const saved = localStorage.getItem(audioKey);
       const savedTime = saved && !isNaN(saved) ? parseFloat(saved) : 0;
 
       audio.currentTime = savedTime;
       seekBar.value = savedTime;
 
-      setTimeout(() => {
-        updateSeekBarBackground(seekBar, savedTime, audio.duration);
-      }, 50);
+      updateSeekBarBackground(seekBar, savedTime, audio.duration);
     });
 
     audio.addEventListener("timeupdate", () => {
-      seekBar.value = audio.currentTime;
-      localStorage.setItem("audioPosition", audio.currentTime);
-      updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
-    });
+      const current = audio.currentTime;
+      seekBar.value = current;
+      updateSeekBarBackground(seekBar, current, audio.duration);
+      localStorage.setItem(audioKey, current);
 
-    audio.addEventListener("pause", () => {
-      localStorage.setItem("audioPosition", audio.currentTime);
-    });
-
-    window.addEventListener("beforeunload", () => {
-      localStorage.setItem("audioPosition", audio.currentTime);
+      // Если почти конец — завершить
+      if (audio.duration - current < 0.15) {
+        audio.pause();
+        audio.currentTime = audio.duration;
+        seekBar.value = audio.duration;
+        updateSeekBarBackground(seekBar, audio.duration, audio.duration);
+      }
     });
 
     seekBar.addEventListener("input", () => {
-      updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
+      const val = parseFloat(seekBar.value);
+      updateSeekBarBackground(seekBar, val, parseFloat(seekBar.max));
     });
 
     seekBar.addEventListener("change", () => {
       const time = parseFloat(seekBar.value);
       audio.currentTime = time;
-      localStorage.setItem("audioPosition", time);
+      localStorage.setItem(audioKey, time);
+    });
+
+    audio.addEventListener("pause", () => {
+      localStorage.setItem(audioKey, audio.currentTime);
+    });
+
+    window.addEventListener("beforeunload", () => {
+      localStorage.setItem(audioKey, audio.currentTime);
     });
   }
 
-  // Видео и музыка из списка
+  // Видео и список музыки
   const videos = document.querySelectorAll('.video');
   const musicItems = document.querySelectorAll(".music-item");
   let currentVideo = null;
@@ -86,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const playButton = item.querySelector(".play-button");
     const audioPlayer = item.querySelector("audio");
     const seekBar = item.querySelector(".seek-bar");
+
     if (!audioPlayer || !seekBar || !playButton) return;
 
     const audioKey = audioPlayer.dataset.key || audioPlayer.src;
@@ -96,20 +107,26 @@ document.addEventListener('DOMContentLoaded', function () {
       const time = savedTime ? parseFloat(savedTime) : 0;
       audioPlayer.currentTime = time;
       seekBar.value = time;
-
-      requestAnimationFrame(() => {
-        updateSeekBarBackground(seekBar, time, audioPlayer.duration);
-      });
+      updateSeekBarBackground(seekBar, time, audioPlayer.duration);
     });
 
     audioPlayer.addEventListener("timeupdate", () => {
-      seekBar.value = audioPlayer.currentTime;
-      localStorage.setItem(audioKey, audioPlayer.currentTime);
-      updateSeekBarBackground(seekBar, audioPlayer.currentTime, audioPlayer.duration);
+      const current = audioPlayer.currentTime;
+      seekBar.value = current;
+      updateSeekBarBackground(seekBar, current, audioPlayer.duration);
+      localStorage.setItem(audioKey, current);
+
+      // Принудительное завершение, если в конце
+      if (audioPlayer.duration - current < 0.15) {
+        audioPlayer.pause();
+        seekBar.value = audioPlayer.duration;
+        updateSeekBarBackground(seekBar, audioPlayer.duration, audioPlayer.duration);
+      }
     });
 
     seekBar.addEventListener("input", () => {
-      updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
+      const val = parseFloat(seekBar.value);
+      updateSeekBarBackground(seekBar, val, parseFloat(seekBar.max));
     });
 
     seekBar.addEventListener("change", () => {
@@ -148,6 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
       updateSeekBarBackground(seekBar, 0, audioPlayer.duration);
       localStorage.removeItem(audioKey);
 
+      // Автовоспроизведение следующего
       if (index < musicItems.length - 1) {
         const nextBtn = musicItems[index + 1].querySelector(".play-button");
         if (nextBtn) nextBtn.click();
