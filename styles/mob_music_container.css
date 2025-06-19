@@ -150,9 +150,8 @@
 
 .download-button {
   position: absolute !important;
-  bottom: 35px !important;		
+  bottom: 36px !important;		
   right: 5px !important;
-  background: linear-gradient(135deg, rgb(199 199 199 / 52%)) !important;
   color: #f5f5f5 !important;
   padding: 5px 10px !important;
   border-radius: 10px !important;
@@ -161,14 +160,12 @@
   text-decoration: none !important;
   cursor: pointer !important;
   user-select: none !important;
-  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15)) !important;
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease !important;
   color: #ffffff !important;
   border: 2px solid rgb(255 255 255 / 100%);
 }
 
 .download-button:hover {
-  background: linear-gradient(135deg, #ffd700) !important;
   transform: translateY(px) !important;
-  color: #242424  !important;
+  color: #ffffff !important;
 }
