@@ -161,7 +161,7 @@
   cursor: pointer !important;
   user-select: none !important;
   color: #ffffff !important;
-  border: 2.5px solid rgb(255 255 255 / 100%);
+  border: 3px solid rgb(255 255 255 / 100%);
 }
 
 .download-button:hover {
