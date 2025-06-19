@@ -1,5 +1,6 @@
+// Функция обновления заливки прогресс-бара
 function updateSeekBarBackground(seekBar, value, max) {
-  const percent = Math.min((value / max) * 100, 100); // максимум 100%
+  const percent = Math.min((value / max) * 100, 100);
   seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
 }
 
@@ -12,13 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     audio.addEventListener('loadedmetadata', () => {
       seekBar.max = audio.duration;
-
       const saved = localStorage.getItem(audioKey);
       const savedTime = saved && !isNaN(saved) ? parseFloat(saved) : 0;
-
       audio.currentTime = savedTime;
       seekBar.value = savedTime;
-
       updateSeekBarBackground(seekBar, savedTime, audio.duration);
     });
 
@@ -28,8 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
       updateSeekBarBackground(seekBar, current, audio.duration);
       localStorage.setItem(audioKey, current);
 
-      // Если почти конец — завершить
-      if (audio.duration - current < 0.15) {
+      if (audio.duration - current < 0.2) {
         audio.pause();
         audio.currentTime = audio.duration;
         seekBar.value = audio.duration;
@@ -57,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Видео и список музыки
   const videos = document.querySelectorAll('.video');
   const musicItems = document.querySelectorAll(".music-item");
   let currentVideo = null;
@@ -96,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const playButton = item.querySelector(".play-button");
     const audioPlayer = item.querySelector("audio");
     const seekBar = item.querySelector(".seek-bar");
-
     if (!audioPlayer || !seekBar || !playButton) return;
 
     const audioKey = audioPlayer.dataset.key || audioPlayer.src;
@@ -116,8 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
       updateSeekBarBackground(seekBar, current, audioPlayer.duration);
       localStorage.setItem(audioKey, current);
 
-      // Принудительное завершение, если в конце
-      if (audioPlayer.duration - current < 0.15) {
+      if (audioPlayer.duration - current < 0.2) {
         audioPlayer.pause();
         seekBar.value = audioPlayer.duration;
         updateSeekBarBackground(seekBar, audioPlayer.duration, audioPlayer.duration);
@@ -165,7 +159,6 @@ document.addEventListener('DOMContentLoaded', function () {
       updateSeekBarBackground(seekBar, 0, audioPlayer.duration);
       localStorage.removeItem(audioKey);
 
-      // Автовоспроизведение следующего
       if (index < musicItems.length - 1) {
         const nextBtn = musicItems[index + 1].querySelector(".play-button");
         if (nextBtn) nextBtn.click();
