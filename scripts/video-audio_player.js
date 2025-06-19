@@ -1,41 +1,64 @@
 // Функция обновления заливки прогресс-бара
-  function updateSeekBarBackground(seekBar, value, max) {
-    const percent = (value / max) * 100;
-    seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
-  }
+function updateSeekBarBackground(seekBar, value, max) {
+  const percent = (value / max) * 100;
+  seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
+}
 
-  document.addEventListener('DOMContentLoaded', function() {
-    // Блок для единственного аудио с id="audio"
-    const audio = document.getElementById('audio');
-    const seekBar = document.getElementById('seekBar');
+document.addEventListener('DOMContentLoaded', function () {
+  // Блок для единственного аудио с id="audio"
+  const audio = document.getElementById('audio');
+  const seekBar = document.getElementById('seekBar');
 
-    if (audio && seekBar) {
-      audio.addEventListener('loadedmetadata', () => {
-        seekBar.max = audio.duration;
-        const saved = localStorage.getItem("audioPosition");
-        if (saved && !isNaN(saved)) {
-          audio.currentTime = parseFloat(saved);
-          seekBar.value = saved;
-        } else {
-          seekBar.value = 0;
-        }
-        updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
-      });
-
-      audio.addEventListener("timeupdate", () => {
-        seekBar.value = audio.currentTime;
-        localStorage.setItem("audioPosition", audio.currentTime);
-        updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
-      });
-
-      seekBar.addEventListener("input", () => {
-        updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
-      });
-
-      seekBar.addEventListener("change", () => {
-        audio.currentTime = parseFloat(seekBar.value);
-      });
+  if (audio && seekBar) {
+    function restoreAudioPosition() {
+      seekBar.max = audio.duration;
+      const saved = localStorage.getItem("audioPosition");
+      if (saved && !isNaN(saved)) {
+        const time = parseFloat(saved);
+        audio.currentTime = time;
+        seekBar.value = time;
+      } else {
+        seekBar.value = 0;
+      }
+      updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
     }
+
+    // Восстановление, если метаданные уже загружены
+    if (audio.readyState >= 1) {
+      restoreAudioPosition();
+    } else {
+      audio.addEventListener('loadedmetadata', restoreAudioPosition);
+    }
+
+    // Обновление позиции в реальном времени
+    audio.addEventListener("timeupdate", () => {
+      seekBar.value = audio.currentTime;
+      localStorage.setItem("audioPosition", audio.currentTime);
+      updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
+    });
+
+    // Сохранение позиции при паузе
+    audio.addEventListener("pause", () => {
+      localStorage.setItem("audioPosition", audio.currentTime);
+    });
+
+    // Сохранение позиции при уходе со страницы
+    window.addEventListener("beforeunload", () => {
+      localStorage.setItem("audioPosition", audio.currentTime);
+    });
+
+    // Обновление заливки при перемещении ползунка
+    seekBar.addEventListener("input", () => {
+      updateSeekBarBackground(seekBar, parseFloat(seekBar.value), parseFloat(seekBar.max));
+    });
+
+    // Изменение позиции аудио при отпускании ползунка
+    seekBar.addEventListener("change", () => {
+      const time = parseFloat(seekBar.value);
+      audio.currentTime = time;
+      localStorage.setItem("audioPosition", time);
+    });
+  }
 
     // Блок для видео и музыки из списков
     var videos = document.querySelectorAll('.video');
