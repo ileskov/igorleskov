@@ -1,71 +1,74 @@
-function loadImage(imageUrl) {
-    return new Promise(function(resolve, reject) {
-        const img = new Image();
-        img.src = imageUrl;
-        img.onload = function() {
+function loadImage(img, src) {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.src = src;
+        image.onload = () => {
+            img.src = src;
+            img.removeAttribute("data-src");
             resolve(img);
         };
-        img.onerror = function() {
-            reject(new Error('Ошибка загрузки изображения: ' + imageUrl));
+        image.onerror = () => {
+            reject(new Error("Ошибка загрузки изображения: " + src));
         };
     });
 }
 
-function eagerLoadImages(images) {
-    return Promise.all(images.map(img => loadImage(img.src)));
+function loadEagerAndViewportImages(images) {
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const preloadMargin = 800; // 800px ниже экрана
+    const promises = [];
+
+    images.forEach(img => {
+        const src = img.dataset.src;
+        const loadingType = img.getAttribute("loading") || "lazy";
+        const rect = img.getBoundingClientRect();
+
+        const shouldLoadNow = (
+            loadingType === "eager" ||
+            rect.top < viewportHeight + preloadMargin
+        );
+
+        if (shouldLoadNow && src) {
+            promises.push(loadImage(img, src));
+        }
+    });
+
+    return Promise.all(promises);
 }
 
-function observeLazyImages(images) {
+function lazyLoadRemainingImages(images) {
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const img = entry.target;
                 const src = img.dataset.src;
                 if (src) {
-                    loadImage(src)
-                        .then(() => {
-                            img.src = src;
-                            img.removeAttribute("data-src");
-                            obs.unobserve(img);
-                        })
-                        .catch(error => {
-                            console.error("Ошибка ленивой загрузки:", error);
-                        });
+                    loadImage(img, src).catch(console.error);
+                    obs.unobserve(img);
                 }
             }
         });
     }, {
-        rootMargin: "100px", // предварительная загрузка
+        rootMargin: "200px",
         threshold: 0.1
     });
 
     images.forEach(img => {
-        const src = img.src;
-        img.dataset.src = src;
-        img.src = ""; // временно убираем
-        observer.observe(img);
-    });
-}
-
-function processImagesWithLoadingAttribute() {
-    const images = document.querySelectorAll('img[loading]');
-    const eager = [];
-    const lazy = [];
-
-    images.forEach(img => {
-        const mode = img.getAttribute("loading");
-        if (mode === "eager") {
-            eager.push(img);
-        } else {
-            lazy.push(img); // и auto, и lazy
+        if (img.dataset.src && !img.src) {
+            observer.observe(img);
         }
     });
-
-    eagerLoadImages(eager)
-        .then(() => console.log("Eager изображения загружены."))
-        .catch(err => console.error("Ошибка загрузки eager изображений:", err));
-
-    observeLazyImages(lazy);
 }
 
-window.addEventListener("load", processImagesWithLoadingAttribute);
+function optimizeImageLoading() {
+    const images = Array.from(document.querySelectorAll('img[loading]'));
+
+    loadEagerAndViewportImages(images)
+        .then(() => {
+            console.log("Быстрые изображения загружены");
+            lazyLoadRemainingImages(images);
+        })
+        .catch(error => console.error("Ошибка загрузки:", error));
+}
+
+window.addEventListener("load", optimizeImageLoading);
