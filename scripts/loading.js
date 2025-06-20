@@ -1,6 +1,6 @@
 function loadImage(imageUrl) {
     return new Promise(function(resolve, reject) {
-        var img = new Image();
+        const img = new Image();
         img.src = imageUrl;
         img.onload = function() {
             resolve(img);
@@ -11,69 +11,61 @@ function loadImage(imageUrl) {
     });
 }
 
-function eagerLoadImages(imageUrls) {
-    return Promise.all(imageUrls.map(loadImage));
+function eagerLoadImages(images) {
+    return Promise.all(images.map(img => loadImage(img.src)));
 }
 
-function autoLoadImages(imageUrls) {
-    const promises = imageUrls.map(function(imageUrl) {
-        if (imageInViewport(imageUrl)) {
-            return loadImage(imageUrl);
-        } else {
-            return null;
-        }
-    }).filter(Boolean); // убираем null
-    return Promise.all(promises);
-}
+function observeLazyImages(images) {
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                const src = img.dataset.src;
+                if (src) {
+                    loadImage(src)
+                        .then(() => {
+                            img.src = src;
+                            img.removeAttribute("data-src");
+                            obs.unobserve(img);
+                        })
+                        .catch(error => {
+                            console.error("Ошибка ленивой загрузки:", error);
+                        });
+                }
+            }
+        });
+    }, {
+        rootMargin: "100px", // предварительная загрузка
+        threshold: 0.1
+    });
 
-function imageInViewport(imageUrl) {
-    var image = document.querySelector('img[src="' + imageUrl + '"]');
-    if (!image) {
-        return false; 
-    }
-
-    var imageRect = image.getBoundingClientRect();
-    var viewportTop = 0;
-    var viewportBottom = window.innerHeight || document.documentElement.clientHeight;
-
-    return (imageRect.top < viewportBottom) && (imageRect.bottom > viewportTop);
+    images.forEach(img => {
+        const src = img.src;
+        img.dataset.src = src;
+        img.src = ""; // временно убираем
+        observer.observe(img);
+    });
 }
 
 function processImagesWithLoadingAttribute() {
-    var imagesWithLoadingAttribute = document.querySelectorAll('img[loading]');
-    var eager = [];
-    var auto = [];
-    var lazy = [];
+    const images = document.querySelectorAll('img[loading]');
+    const eager = [];
+    const lazy = [];
 
-    imagesWithLoadingAttribute.forEach(function(img) {
-        var src = img.src;
-        var mode = img.getAttribute('loading');
-
-        switch (mode) {
-            case 'eager':
-                eager.push(src);
-                break;
-            case 'auto':
-                auto.push(src);
-                break;
-            case 'lazy':
-            default:
-                lazy.push(src);
+    images.forEach(img => {
+        const mode = img.getAttribute("loading");
+        if (mode === "eager") {
+            eager.push(img);
+        } else {
+            lazy.push(img); // и auto, и lazy
         }
     });
 
-    Promise.all([
-        eagerLoadImages(eager),
-        autoLoadImages(auto),
-        Promise.all(lazy.map(loadImage)) // заменяет удалённую lazyLoadImages
-    ]).then(function(results) {
-        const allLoadedImages = results.flat();
-        console.log('Изображения успешно загружены:', allLoadedImages);
-    }).catch(function(error) {
-        console.error('Ошибка загрузки изображений:', error);
-    });
+    eagerLoadImages(eager)
+        .then(() => console.log("Eager изображения загружены."))
+        .catch(err => console.error("Ошибка загрузки eager изображений:", err));
+
+    observeLazyImages(lazy);
 }
 
-window.onload = function() {
-    processImagesWithLoadingAttribute();
-};
+window.addEventListener("load", processImagesWithLoadingAttribute);
