@@ -9,7 +9,7 @@ function checkNetworkLoad(url, dataTransferred) {
 
     var totalBytes = dataTransferred.reduce((a, b) => a + b, 0);
     var totalMiB = (totalBytes / (1024 * 1024)).toFixed(2); 
-    var thresholdMiB = 100; 
+    var thresholdMiB = 350; 
 
     if (totalBytes === 0) {
         return "Данные не передавались.";
