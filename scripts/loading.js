@@ -1,77 +1,81 @@
-function loadImage(img, src) {
-    return new Promise((resolve, reject) => {
-        img.onload = () => {
-            img.removeAttribute("data-src");
+function loadImage(imageUrl) {
+    return new Promise(function(resolve, reject) {
+        var img = new Image();
+        img.src = imageUrl;
+        img.onload = function() {
             resolve(img);
         };
-        img.onerror = () => {
-            reject(new Error("Ошибка загрузки изображения: " + src));
+        img.onerror = function() {
+            reject(new Error('Ошибка загрузки изображения: ' + imageUrl));
         };
-        img.src = src;
     });
 }
 
-function loadEagerAndNearViewportImages(images) {
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const preloadMargin = 300; // Уменьшили до 300px
-    const promises = [];
+function eagerLoadImages(imageUrls) {
+    return Promise.all(imageUrls.map(function(imageUrl) {
+        return loadImage(imageUrl);
+    }));
+}
 
-    images.forEach(img => {
-        const src = img.dataset.src;
-        const loadingType = img.getAttribute("loading") || "lazy";
-        const rect = img.getBoundingClientRect();
-
-        const shouldLoadNow = (
-            loadingType === "eager" ||
-            rect.top < viewportHeight + preloadMargin
-        );
-
-        if (shouldLoadNow && src && !img.src) {
-            promises.push(loadImage(img, src));
+function autoLoadImages(imageUrls) {
+    return Promise.all(imageUrls.map(function(imageUrl) {
+        if (imageInViewport(imageUrl)) {
+            return loadImage(imageUrl);
         }
-    });
-
-    return Promise.all(promises);
+    }));
 }
 
-function lazyLoadRemainingImages(images) {
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                const src = img.dataset.src;
-                if (src && !img.src) {
-                    loadImage(img, src).catch(console.error);
-                    obs.unobserve(img);
-                }
-            }
-        });
-    }, {
-        rootMargin: "200px",
-        threshold: 0.1
-    });
-
-    images.forEach(img => {
-        if (img.dataset.src && !img.src) {
-            observer.observe(img);
-        }
-    });
+function lazyLoadImages(imageUrls) {
+    return Promise.all(imageUrls.map(function(imageUrl) {
+        return loadImage(imageUrl); 
+    }));
 }
 
-function optimizeImageLoading() {
-    const images = Array.from(document.querySelectorAll('img[loading][data-src]'));
-
-    loadEagerAndNearViewportImages(images)
-        .then(() => {
-            lazyLoadRemainingImages(images);
-        })
-        .catch(console.error);
-}
-
-window.addEventListener("load", () => {
-    if ('requestIdleCallback' in window) {
-        requestIdleCallback(optimizeImageLoading);
-    } else {
-        setTimeout(optimizeImageLoading, 200);
+function imageInViewport(imageUrl) {
+    var image = document.querySelector('img[src="' + imageUrl + '"]');
+    if (!image) {
+        return false; 
     }
-});
+
+    var imageRect = image.getBoundingClientRect();
+    var imageTop = imageRect.top;
+    var imageBottom = imageRect.bottom;
+
+    var viewportTop = 0;
+    var viewportBottom = window.innerHeight || document.documentElement.clientHeight;
+
+    return (imageTop < viewportBottom) && (imageBottom > viewportTop);
+}
+
+function processImagesWithLoadingAttribute() {
+    var imagesWithLoadingAttribute = document.querySelectorAll('img[loading]');
+    var imageUrls = [];
+    imagesWithLoadingAttribute.forEach(function(img) {
+        imageUrls.push(img.src);
+    });
+    
+    var loadMethod;
+    switch (document.loading) {
+        case 'eager':
+            loadMethod = eagerLoadImages;
+            break;
+        case 'auto':
+            loadMethod = autoLoadImages;
+            break;
+        case 'lazy':
+        default:
+            loadMethod = lazyLoadImages;
+    }
+
+    loadMethod(imageUrls).then(function(images) {
+
+        console.log('Изображения успешно загружены:', images);
+    }).catch(function(error) {
+
+        console.error('Ошибка загрузки изображений:', error);
+    });
+}
+
+window.onload = function() {
+    processImagesWithLoadingAttribute();
+};
