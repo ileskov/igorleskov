@@ -1,21 +1,19 @@
 function loadImage(img, src) {
     return new Promise((resolve, reject) => {
-        const image = new Image();
-        image.src = src;
-        image.onload = () => {
-            img.src = src;
+        img.onload = () => {
             img.removeAttribute("data-src");
             resolve(img);
         };
-        image.onerror = () => {
+        img.onerror = () => {
             reject(new Error("Ошибка загрузки изображения: " + src));
         };
+        img.src = src;
     });
 }
 
-function loadEagerAndViewportImages(images) {
+function loadEagerAndNearViewportImages(images) {
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const preloadMargin = 800; // 800px ниже экрана
+    const preloadMargin = 300; // Уменьшили до 300px
     const promises = [];
 
     images.forEach(img => {
@@ -28,7 +26,7 @@ function loadEagerAndViewportImages(images) {
             rect.top < viewportHeight + preloadMargin
         );
 
-        if (shouldLoadNow && src) {
+        if (shouldLoadNow && src && !img.src) {
             promises.push(loadImage(img, src));
         }
     });
@@ -42,7 +40,7 @@ function lazyLoadRemainingImages(images) {
             if (entry.isIntersecting) {
                 const img = entry.target;
                 const src = img.dataset.src;
-                if (src) {
+                if (src && !img.src) {
                     loadImage(img, src).catch(console.error);
                     obs.unobserve(img);
                 }
@@ -61,14 +59,19 @@ function lazyLoadRemainingImages(images) {
 }
 
 function optimizeImageLoading() {
-    const images = Array.from(document.querySelectorAll('img[loading]'));
+    const images = Array.from(document.querySelectorAll('img[loading][data-src]'));
 
-    loadEagerAndViewportImages(images)
+    loadEagerAndNearViewportImages(images)
         .then(() => {
-            console.log("Быстрые изображения загружены");
             lazyLoadRemainingImages(images);
         })
-        .catch(error => console.error("Ошибка загрузки:", error));
+        .catch(console.error);
 }
 
-window.addEventListener("load", optimizeImageLoading);
+window.addEventListener("load", () => {
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(optimizeImageLoading);
+    } else {
+        setTimeout(optimizeImageLoading, 200);
+    }
+});
