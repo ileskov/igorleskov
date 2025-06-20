@@ -2,12 +2,12 @@ body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #c7c7c7;
+            color: #242424;
         }
 		
 		header {
-            background-color: #333;
+            background-color: #00326a;
             color: #fff;
             text-align: center;
             padding: 10px 20px;
@@ -73,7 +73,7 @@ body {
         }
 		
 		footer {
-           background-color: #333;
+           background-color: #00326a;
            color: #fff;
            text-align: center;
 		   position: fixed;
@@ -156,38 +156,6 @@ body {
         .language-link:hover img {
             transform: scale(0.9); 
         }
-		
-		  #cookie-consent-bar {
-            display: none;
-            position: fixed;
-            top: 90px;
-            left: 0;
-            width: 100%;
-            background-color: #5d5d5d; 
-            color: #fff; 
-            padding: 10px 20px;
-            text-align: center;
-            z-index: 9999;
-        }
-
-        #cookie-consent-bar p {
-            margin: 0;
-        }
-
-        #cookie-consent-bar button {
-            background-color: #8d8d8d; 
-            color: #000; 
-            border: none;
-            padding: 8px 20px;
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        #cookie-consent-bar button:hover {
-            background-color: #fff; 
-        }
 
 		 footer a {
             color: #fff;
@@ -195,7 +163,7 @@ body {
 		}
 		
 		main a {
-            color: #333;
+            color: #000000;
             text-decoration: none; 
         }
 		
