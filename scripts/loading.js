@@ -12,23 +12,18 @@ function loadImage(imageUrl) {
 }
 
 function eagerLoadImages(imageUrls) {
-    return Promise.all(imageUrls.map(function(imageUrl) {
-        return loadImage(imageUrl);
-    }));
+    return Promise.all(imageUrls.map(loadImage));
 }
 
 function autoLoadImages(imageUrls) {
-    return Promise.all(imageUrls.map(function(imageUrl) {
+    const promises = imageUrls.map(function(imageUrl) {
         if (imageInViewport(imageUrl)) {
             return loadImage(imageUrl);
+        } else {
+            return null;
         }
-    }));
-}
-
-function lazyLoadImages(imageUrls) {
-    return Promise.all(imageUrls.map(function(imageUrl) {
-        return loadImage(imageUrl); 
-    }));
+    }).filter(Boolean); // убираем null
+    return Promise.all(promises);
 }
 
 function imageInViewport(imageUrl) {
@@ -38,40 +33,43 @@ function imageInViewport(imageUrl) {
     }
 
     var imageRect = image.getBoundingClientRect();
-    var imageTop = imageRect.top;
-    var imageBottom = imageRect.bottom;
-
     var viewportTop = 0;
     var viewportBottom = window.innerHeight || document.documentElement.clientHeight;
 
-    return (imageTop < viewportBottom) && (imageBottom > viewportTop);
+    return (imageRect.top < viewportBottom) && (imageRect.bottom > viewportTop);
 }
 
 function processImagesWithLoadingAttribute() {
     var imagesWithLoadingAttribute = document.querySelectorAll('img[loading]');
-    var imageUrls = [];
+    var eager = [];
+    var auto = [];
+    var lazy = [];
+
     imagesWithLoadingAttribute.forEach(function(img) {
-        imageUrls.push(img.src);
+        var src = img.src;
+        var mode = img.getAttribute('loading');
+
+        switch (mode) {
+            case 'eager':
+                eager.push(src);
+                break;
+            case 'auto':
+                auto.push(src);
+                break;
+            case 'lazy':
+            default:
+                lazy.push(src);
+        }
     });
-    
-    var loadMethod;
-    switch (document.loading) {
-        case 'eager':
-            loadMethod = eagerLoadImages;
-            break;
-        case 'auto':
-            loadMethod = autoLoadImages;
-            break;
-        case 'lazy':
-        default:
-            loadMethod = lazyLoadImages;
-    }
 
-    loadMethod(imageUrls).then(function(images) {
-
-        console.log('Изображения успешно загружены:', images);
+    Promise.all([
+        eagerLoadImages(eager),
+        autoLoadImages(auto),
+        Promise.all(lazy.map(loadImage)) // заменяет удалённую lazyLoadImages
+    ]).then(function(results) {
+        const allLoadedImages = results.flat();
+        console.log('Изображения успешно загружены:', allLoadedImages);
     }).catch(function(error) {
-
         console.error('Ошибка загрузки изображений:', error);
     });
 }
@@ -79,4 +77,3 @@ function processImagesWithLoadingAttribute() {
 window.onload = function() {
     processImagesWithLoadingAttribute();
 };
-
