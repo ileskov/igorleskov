@@ -1,4 +1,3 @@
-// Функция для обновления заливки прогресс-бара
 function updateSeekBarBackground(seekBar, value, max) {
   const percent = max > 0 ? (value / max) * 100 : 0;
   seekBar.style.background = `linear-gradient(to right, #00336a 0%, #00336a ${percent}%, #c7c7c7 ${percent}%, #c7c7c7 100%)`;
@@ -11,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
   var currentAudioPlayer = null;
   var currentPlayButton = null;
 
-  // Видео
   videos.forEach(function(video) {
     video.addEventListener('loadeddata', function() {
       var videoKey = video.dataset.key;
@@ -46,14 +44,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Музыкальные треки
   musicItems.forEach(function(item, index) {
     var playButton = item.querySelector(".play-button");
     var audioSrc = playButton.dataset.src;
     var audioPlayer = new Audio(audioSrc);
     var seekBar = item.querySelector(".seek-bar");
 
-    // После загрузки метаданных — установка max и позиции
     audioPlayer.addEventListener("loadedmetadata", function() {
       seekBar.max = audioPlayer.duration || 0;
 
@@ -67,13 +63,11 @@ document.addEventListener('DOMContentLoaded', function() {
       updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
     });
 
-    // Обновление прогресс-бара при изменении времени аудио
     audioPlayer.addEventListener("timeupdate", function() {
       seekBar.value = audioPlayer.currentTime;
       updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
     });
 
-    // Перемотка — изменение значения бегунка
     seekBar.addEventListener("input", function() {
       updateSeekBarBackground(seekBar, seekBar.value, seekBar.max);
     });
@@ -83,9 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem(audioSrc, seekBar.value);
     });
 
-    // Клик по кнопке play/pause
     playButton.addEventListener("click", function() {
-      // Если другой аудиоплеер играет — приостанавливаем его
       if (currentAudioPlayer && currentAudioPlayer !== audioPlayer) {
         currentAudioPlayer.pause();
         if (currentPlayButton) {
@@ -99,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (audioPlayer.paused) {
         audioPlayer.play();
-        playButton.innerHTML = "&#10074;&#10074;"; // || пауза
+        playButton.innerHTML = "&#10074;&#10074;";
         playButton.classList.add("playing");
 
         if (currentVideo && !currentVideo.paused) {
@@ -108,12 +100,11 @@ document.addEventListener('DOMContentLoaded', function() {
       } else {
         audioPlayer.pause();
         localStorage.setItem(audioSrc, audioPlayer.currentTime);
-        playButton.innerHTML = "&#9658;"; // ▶ воспроизведение
+        playButton.innerHTML = "&#9658;";
         playButton.classList.remove("playing");
       }
     });
 
-    // При окончании трека — сбрасываем и запускаем следующий
     audioPlayer.addEventListener("ended", function() {
       playButton.innerHTML = "&#9658;";
       seekBar.value = 0;
@@ -126,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // При запуске аудио — останавливаем видео, если нужно
     audioPlayer.addEventListener('play', function() {
       if (currentVideo && !currentVideo.paused) {
         currentVideo.pause();
@@ -134,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // При клике на кнопку play любого трека — останавливаем видео
   musicItems.forEach(function(item) {
     var playButton = item.querySelector(".play-button");
     playButton.addEventListener("click", function() {
