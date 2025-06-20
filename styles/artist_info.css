@@ -20,30 +20,28 @@
         .artist-image {
          width: calc(33.33% - 20px);
          text-align: center;
-         position: relative; /* Для позиционирования дочерних элементов */
+         position: relative; 
          margin-top: 30px;
   border-radius: 10px;
-  overflow: hidden; /* Чтобы текст не выходил за края */
+  overflow: hidden; 
                 
         }
 
-
-       .artist-image .label {
+   .artist-image .label {
   position: absolute;
-  top: 43px; /* отступ сверху */
-  left: 153px; /* отступ слева */
-  background: rgb(245 245 245); /* полупрозрачный фон */
+  top: 43px; 
+  left: 153px; 
+  background: rgb(245 245 245); 
   color: #242424;
   padding: 5px 10px;
   border-radius: 5px;
   font-weight: bold;
   font-size: 14px;
   user-select: none;
-  overflow: hidden; /* обязательно для псевдоэлемента */
+  overflow: hidden; 
   z-index: 1;
 }
 
-/* Анимированная золотая рамка-змейка */
 .artist-image .label::before {
   content: "";
   position: absolute;
@@ -73,7 +71,6 @@
   box-sizing: border-box;
 }
 
-/* Ключевые кадры для движения "змейки" */
 @keyframes snake-glow {
   0% {
     background-position: 0% 50%;
