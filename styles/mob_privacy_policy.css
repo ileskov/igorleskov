@@ -2,12 +2,12 @@ body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
-            color: #333;
+            background-color: #c7c7c7;
+            color: #242424;
         }
 		
 		header {
-            background-color: #333;
+            background-color: #00326a;
             color: #fff;
             text-align: center;
             padding: 10px 20px;
@@ -21,10 +21,6 @@ body {
             margin-left: 20px;
             animation: fadeIn 1s ease;
 			transition: transform 0.3s ease;
-        }
-
-        header img:hover {
-            transform: scale(0.9);
         }
 
         @keyframes fadeIn {
@@ -73,7 +69,7 @@ body {
         }
 		
 		footer {
-               background-color: #333;
+               background-color: #00326a;
                color: #fff;
                text-align: center;
                padding: 10px 5px;
@@ -163,10 +159,6 @@ body {
             transition: transform 0.3s ease; 
         }
 
-        .language-link:hover img {
-            transform: scale(0.9); 
-        }
-
 		 footer a {
             color: #fff;
             text-decoration: none;
@@ -174,7 +166,7 @@ body {
 		}
 		
 		main a {
-            color: #333;
+            color: #000000;
             text-decoration: none; 
         }
 		
