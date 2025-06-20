@@ -142,16 +142,19 @@
 .label-1 {
     top: 40px;
     left: 35px;
+    font-style: italic;
 }
 
 .label-2 {
     top: 40px;
     left: 35px; 
+    font-style: italic;
 }
 
 .label-3 {
     top: 40px;
     left: 35px; 
+    font-style: italic;
 }
 
         .artist-image {
