@@ -1,45 +1,45 @@
 .artist-info {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  animation: slideIn 1s ease;
-}
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
+          animation: slideIn 1s ease;
+        }
 
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+        @keyframes slideIn {
+           from {
+        opacity: 0;
+        transform: translateY(-20px);
+        }
+         to {
+         opacity: 1;
+         transform: translateY(0);
+        }
+    }
 
-.artist-image {
-  width: calc(33.33% - 20px);
-  text-align: center;
-  position: relative;
-  margin-top: 30px;
+        .artist-image {
+         width: calc(33.33% - 20px);
+         text-align: center;
+         position: relative; 
+         margin-top: 30px;
   border-radius: 10px;
-  overflow: hidden;
-}
+  overflow: hidden; 
+                
+        }
 
-/* === ИЗМЕНЕНО: сделано position: fixed и координаты относительно окна === */
-.artist-image .label {
-  position: fixed; /* ← ИЗМЕНЕНО */
-  top: 50px;        /* ← ИЗМЕНЕНО */
-  left: 50px;       /* ← ИЗМЕНЕНО */
-  background: rgb(245 245 245);
+   .artist-image .label {
+  position: absolute;
+  top: 43px; 
+  left: 153px; 
+  background: rgb(245 245 245); 
   color: #242424;
   padding: 5px 10px;
   border-radius: 5px;
   font-weight: bold;
   font-size: 14px;
   user-select: none;
-  overflow: hidden;
-  z-index: 1000;    /* ← ИЗМЕНЕНО: увеличен приоритет слоя */
+  overflow: hidden; 
+  z-index: 1;
 }
 
 .artist-image .label::before {
@@ -80,11 +80,12 @@
   }
 }
 
-.artist-image img {
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 5px solid #242424;
-  margin-top: 30px;
-}
+        .artist-image img {
+         width: 300px;
+         height: 300px;
+         object-fit: cover;
+         border-radius: 10px; 
+         border: 5px solid #242424;
+         margin-top: 30px;
+        }
+
