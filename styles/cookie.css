@@ -41,6 +41,6 @@
         }
 
         #cookie-consent-bar button:hover {
-  background-color: #00336a; /* белый фон при наведении */
-  color: #ffffff;            /* текст остаётся тёмным */
+  background-color: #00336a; 
+  color: #ffffff;            
 }
