@@ -7,12 +7,10 @@ function checkNetworkLoad(url, dataTransferred) {
         return "Массив переданных данных пуст.";
     }
 
-    // Расчёт
     var totalBytes = dataTransferred.reduce((a, b) => a + b, 0);
     var totalMiB = (totalBytes / (1024 * 1024)).toFixed(2); 
     var thresholdMiB = 100; 
 
-    // Вывод результата
     if (totalBytes === 0) {
         return "Данные не передавались.";
     }
