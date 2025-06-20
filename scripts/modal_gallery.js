@@ -11,7 +11,6 @@ function openModal(imageSrc) {
     var modal = document.getElementById("myModal");
     var modalImg = document.getElementById("modalImg");
 
-    // Устанавливаем текущий индекс изображения
     currentImageIndex = images.indexOf(imageSrc);
     if (currentImageIndex === -1) currentImageIndex = 0;
 
@@ -45,7 +44,7 @@ function updateModalImage() {
 }
 
 document.getElementById("modalImg").addEventListener("click", function(event) {
-    event.stopPropagation(); // Чтобы клик не закрывал модал
+    event.stopPropagation();
     nextImage();
 });
 
