@@ -29,8 +29,9 @@
 
    .artist-image .label {
   position: absolute;
-  top: 43px; 
-  left: 153px; 
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
   background: rgb(245 245 245); 
   color: #242424;
   padding: 5px 10px;
